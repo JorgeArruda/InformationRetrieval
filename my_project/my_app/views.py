@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from uploads.core.models import Document
+from .models import Documents
 # Create your views here.
 
 def home(request):
-    documents = Document.objects.all()
-    return render(request, 'core/home.html', { 'documents': documents })
+    documents = Documents.objects.all()
+    return render(request, 'my_app/home.html', { 'documents': documents })

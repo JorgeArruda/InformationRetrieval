@@ -1,4 +1,4 @@
-#!/home/jorge/Documents/Projetos/Python/Information Retrieavel/env/bin/python
+#!/home/jorge/Documents/Projetos/Python/Information_Retrieavel/env/bin/python
 
 import sys
 import getopt

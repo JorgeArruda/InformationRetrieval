@@ -1,4 +1,4 @@
-#!"/home/jorge/Documents/Projetos/Python/Information Retrieavel/env/bin/python2"
+#!/home/jorge/Documents/Projetos/Python/Information_Retrieavel/env/bin/python2
 
 # -*- coding: utf-8 -*-
 import re
