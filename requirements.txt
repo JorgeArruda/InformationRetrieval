@@ -1,0 +1,7 @@
+bs4
+nltk
+pdftotext
+PyMySQL
+pytesseract
+ply
+django
