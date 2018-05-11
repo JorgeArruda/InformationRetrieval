@@ -1,12 +1,50 @@
+{% load staticfiles %}
 <!DOCTYPE html>
-<html>
-  <head>
+<html style="width: 100%; height: 100%;">
+
+<head>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <meta charset="utf-8">
     <title>Simple File Upload</title>
-  </head>
-  <body>
-    {% block content %}
-    <p >Oi</p>
-    {% endblock %}
-  </body>
+</head>
+
+<body>
+    <div style="width: 100%; height: 100%; position: fixed;">
+        <div style="width: 100%; height: 25%; background-color: cadetblue;">
+
+        </div>
+
+        <div style="width: 100%; height: 75%; display: inline-flex; align-items: center; position: relative;">
+            <div style="width: 30%; height: 100%; display: inline; position: relative;">
+                <header style="width: 100%; margin: 10px">Archives</header>
+                <nav class="scroll" style="width: 100%; height: 100%;">
+                    <ul class="scroll">
+                        <li>Link 1</li>
+                        <li>Link 2</li>
+                        <li>Link 3</li>
+                        <li>Link 4</li>
+                        <li>Link 5</li>
+                        <li>Link 6</li>
+                        <li>Link 7</li>
+                        <li>Link 8</li>
+                        <li>Link 9</li>
+                        <li>Link 10</li>
+                        <li>Link 11</li>
+                        <li>Link 13</li>
+                        <li>Link 13</li>
+                    </ul>
+                </nav>
+            </div>
+            <div style="width: 70%; height: 100%; display: inline; position: relative; background-color: rgb(87, 209, 83);">
+                <!-- {% block content %}
+                <p style="width: 200px; height: 200px;">Oi</p>
+                {{ documents }} {% endblock %} -->
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
