@@ -7,14 +7,18 @@
         crossorigin="anonymous"> -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
     <meta charset="utf-8">
     <title>Simple File Upload</title>
 </head>
 
 <body>
     <div style="width: 100%; height: 100%; position: fixed;">
-        <div style="width: 100%; height: 25%; background-color: cadetblue;">
-
+        <div style="padding: 15px; width: 100%; height: 25%; background-color: cadetblue;">
+            <div class="form-group">
+                <label for="inputFile">Upload file</label>
+                <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
+            </div>
         </div>
 
         <div style="width: 100%; height: 75%; display: inline-flex; align-items: center; position: relative;">
@@ -22,19 +26,9 @@
                 <header style="width: 100%; margin: 10px">Archives</header>
                 <nav class="scroll" style="width: 100%; height: 100%;">
                     <ul class="scroll">
-                        <li>Link 1</li>
-                        <li>Link 2</li>
-                        <li>Link 3</li>
-                        <li>Link 4</li>
-                        <li>Link 5</li>
-                        <li>Link 6</li>
-                        <li>Link 7</li>
-                        <li>Link 8</li>
-                        <li>Link 9</li>
-                        <li>Link 10</li>
-                        <li>Link 11</li>
-                        <li>Link 13</li>
-                        <li>Link 13</li>
+                        {% for document in documents %}
+                            <li>{{ document.nome }}</li>
+                        {% endfor %}
                     </ul>
                 </nav>
             </div>

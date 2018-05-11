@@ -121,6 +121,9 @@ class Documents(models.Model):
         managed = False
         db_table = 'documents'
 
+    def __str__(self):
+        return self.nome
+
 
 class Global(models.Model):
     idglobal = models.AutoField(primary_key=True)

@@ -124,3 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+PULL_DRIVER_UPLOAD_PATH = os.path.join(BASE_DIR, 'media')
+
+APPEND_SLASH=False
