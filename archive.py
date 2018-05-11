@@ -3,11 +3,11 @@
 import json
 
 # Importando arquivos
-import lex
-import ocr
-import pdf_read
-import docx_read
-import html_read
+import my_app.lex as lex
+import my_app.ocr as ocr
+import my_app.pdf_read as pdf_read
+import my_app.docx_read as docx_read
+import my_app.html_read as html_read
 
 def get_text(name, path = '/'):
     if type(path) != str:

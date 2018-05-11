@@ -114,15 +114,12 @@ class DjangoSession(models.Model):
 class Documents(models.Model):
     iddocument = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    texto = models.TextField()  # This field type is a guess.
-    tokens = models.TextField()  # This field type is a guess.
+    texto = models.TextField(blank=True, null=True)
+    tokens = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
         db_table = 'documents'
-
-    def __str__(self):
-        return self.nome
 
 
 class Global(models.Model):
@@ -132,6 +129,7 @@ class Global(models.Model):
     class Meta:
         managed = False
         db_table = 'global'
+
 
 class Package(models.Model):
     idpackages = models.AutoField(primary_key=True)

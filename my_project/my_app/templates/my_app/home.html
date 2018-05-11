@@ -7,6 +7,7 @@
         crossorigin="anonymous"> -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
     <meta charset="utf-8">
     <title>Simple File Upload</title>
@@ -16,8 +17,11 @@
     <div style="width: 100%; height: 100%; position: fixed;">
         <div style="padding: 15px; width: 100%; height: 25%; background-color: cadetblue;">
             <div class="form-group">
-                <label for="inputFile">Upload file</label>
-                <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
+                <form class="form-signin" method="POST">
+                    {% csrf_token %}
+                    <label for="inputFile">Upload file</label>
+                    <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
+                </form>
             </div>
         </div>
 
@@ -27,7 +31,7 @@
                 <nav class="scroll" style="width: 100%; height: 100%;">
                     <ul class="scroll">
                         {% for document in documents %}
-                            <li>{{ document.nome }}</li>
+                        <li>{{ document.nome }}</li>
                         {% endfor %}
                     </ul>
                 </nav>
