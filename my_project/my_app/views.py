@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Documents
+from .models import Global
 
 import time
 import os
@@ -37,12 +38,27 @@ def upload_drive(request):
         with open(target, 'wb+') as dest:
             for c in upload_file.chunks():
                 dest.write(c)
+        words = json.loads(Global.objects.values('words').distinct()[0]['words'])
 
         text = archive.get_text(filename, target_folder+'/')
-        tokens = archive.get_tokens(text)
-        Documents(nome=filename, texto=text, tokens=json.dumps({filename:tokens}, ensure_ascii=False)).save()
+        (tokens, words) = archive.get_frequency(archive.get_tokens(text), words)
+        print("TOKENS ",tokens)
+        Documents(nome=filename, texto=text, tokens=json.dumps(tokens, ensure_ascii=False)).save()
+        Global(id=1, words=json.dumps(words, ensure_ascii=False)).save()
 
         return JsonResponse({"nome": filename, "status": 'true'})
     else:
         return HttpResponse(status=500)
     return HttpResponse(status=200)
+
+@csrf_exempt
+def getdocument(request):
+    name = request.POST['name']
+    tokens = json.loads(Documents.objects.values('tokens').filter(nome=name)[0]['tokens'])
+    words = []
+    var = 1
+    for word in tokens:
+        words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
+        var+=1
+    print(words)
+    return render(request, 'my_app/show_document.html', { 'words': words })

@@ -19,3 +19,16 @@ nav ul {
 nav ul>li {
     width: 100%;
 }
+
+td {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.row-document {
+    cursor: pointer;
+}
+
+.row-document:active {
+    background: rgb(127, 231, 235);
+    transform: scale(1.05);
+}

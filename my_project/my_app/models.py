@@ -112,7 +112,7 @@ class DjangoSession(models.Model):
 
 
 class Documents(models.Model):
-    iddocument = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     texto = models.TextField(blank=True, null=True)
     tokens = models.TextField(blank=True, null=True)  # This field type is a guess.
@@ -123,7 +123,7 @@ class Documents(models.Model):
 
 
 class Global(models.Model):
-    idglobal = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     words = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:

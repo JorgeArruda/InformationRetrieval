@@ -24,8 +24,10 @@ def get_text(name, path = '/'):
             return pdf_read.file(path+name)
         elif (archive_type == "docx"):
             return docx_read.file(path+name)
-        elif (archive_type == "jpg" | archive_type == "png"):
+        elif ((archive_type == "jpg") | (archive_type == "png")):
             return ocr.file(path+name)
+        else:
+            return ' '
     except FileNotFoundError:
        print("No such file or directory: ",path+name)
        return ' '
@@ -40,6 +42,7 @@ def get_frequency(listTokens, frequencyWord):
 
         frequencyDocument = {}
         for token in listTokens:
+            print(token)
             if token in frequencyWord:
                 frequencyWord[ token ]+=1
             else:
@@ -50,7 +53,24 @@ def get_frequency(listTokens, frequencyWord):
             else:
                 frequencyDocument[ token ]=1
         
-        return (sort_dic(frequencyDocument), sort_dic(frequencyWord))
+        return (dict(sort_dic(frequencyDocument)), dict(sort_dic(frequencyWord)))
 
+def get_frequency2(listTokens, frequencyWord):
+        "Vare a lista de tokens do documento, retorna a frequência. Incrementa também a frequência global. return (frequencyDocument, frequencyWord)"
+        frequencyDocument = {}
+        # if type(frequencyWord)=='list':
+        for token in listTokens:
+            if token in frequencyWord:
+                frequencyWord[ token ]+=1
+            else:
+                frequencyWord[ token ]=1
+
+            if token in frequencyDocument:
+                frequencyDocument[ token ]+=1
+            else:
+                frequencyDocument[ token ]=1
+        
+        return (dict(sort_dic(frequencyDocument)), frequencyWord)
+            
 if __name__ =="__main__":
     get_text("jkak.pdf")
