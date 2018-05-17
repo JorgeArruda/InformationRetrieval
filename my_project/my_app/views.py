@@ -11,6 +11,7 @@ import sys
 import json
 
 import my_app.ri_vetorial.archive as archive
+import my_app.mysql as mysql
 
 # Create your views here.
 
@@ -20,31 +21,31 @@ def home(request):
 
 @csrf_exempt
 def upload_drive(request):
+    # Get file
     upload_file = request.FILES['file']
     ret = []
     if upload_file:
+        # Verifica se a pasta alvo já existe, se não, cria ela
         target_folder = settings.PULL_DRIVER_UPLOAD_PATH
-
         if not os.path.exists(target_folder):
             os.mkdir(target_folder)
-        documents = Documents.objects.values('nome').distinct()
-        filename = request.POST['filename']
-        if (documents):
-            for document in documents:
-                if ( str(document['nome']) ==  str(filename)):
-                    return JsonResponse({"nome": filename, "status": 'false'})
 
+        # Verifica se o arquivo já existe no bd
+        filename = request.POST['filename']
+        documents = Documents.objects.values('nome').filter(nome=filename)
+        if ( len(documents) != 0 ):
+            return JsonResponse({"nome": filename, "status": 'false'})
+
+        # Save file in folder 'media'
         target = os.path.join(target_folder, filename)
         with open(target, 'wb+') as dest:
             for c in upload_file.chunks():
                 dest.write(c)
-        words = json.loads(Global.objects.values('words').distinct()[0]['words'])
 
+        # Analisa o arquivo em busca de textos
         text = archive.get_text(filename, target_folder+'/')
-        (tokens, words) = archive.get_frequency(archive.get_tokens(text), words)
-        print("TOKENS ",tokens)
-        Documents(nome=filename, texto=text, tokens=json.dumps(tokens, ensure_ascii=False)).save()
-        Global(id=1, words=json.dumps(words, ensure_ascii=False)).save()
+        # Salva o novo documento no db
+        mysql.insert_document( filename, text )
 
         return JsonResponse({"nome": filename, "status": 'true'})
     else:
@@ -54,11 +55,15 @@ def upload_drive(request):
 @csrf_exempt
 def getdocument(request):
     name = request.POST['name']
-    tokens = json.loads(Documents.objects.values('tokens').filter(nome=name)[0]['tokens'])
-    words = []
-    var = 1
-    for word in tokens:
-        words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
-        var+=1
-    print(words)
-    return render(request, 'my_app/show_document.html', { 'words': words })
+    tokens = Documents.objects.values('tokens').filter(nome=name)
+    if len(tokens) == 0:
+        return render(request, 'my_app/show_document.html', { 'words': {} })
+    else:
+        tokens = json.loads(tokens[0]['tokens'])
+        words = []
+        var = 1
+        for word in tokens:
+            words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
+            var+=1
+        # print(words)
+        return render(request, 'my_app/show_document.html', { 'words': words })

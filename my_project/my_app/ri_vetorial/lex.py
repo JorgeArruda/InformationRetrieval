@@ -47,8 +47,6 @@ def tokenize(text, language='portuguese'):
         tok = lexer.token()
         if not tok: 
             break
-        tok.value = tok.value.lower() 
-        if not (tok.value in stopwords):
-            listTokens.append(tok.value)
+        listTokens.append( tok.value.lower() )
 
     return sorted(listTokens)

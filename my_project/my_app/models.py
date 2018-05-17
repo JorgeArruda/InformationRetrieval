@@ -116,6 +116,12 @@ class Documents(models.Model):
     nome = models.CharField(max_length=255)
     texto = models.TextField(blank=True, null=True)
     tokens = models.TextField(blank=True, null=True)  # This field type is a guess.
+    qtstopwords = models.IntegerField(blank=True, null=True)
+    qtstopwordstotal = models.IntegerField(blank=True, null=True)
+    qtadverbios = models.IntegerField(blank=True, null=True)
+    qtadverbiostotal = models.IntegerField(blank=True, null=True)
+    qttok = models.IntegerField(blank=True, null=True)
+    qttoktotal = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -125,6 +131,9 @@ class Documents(models.Model):
 class Global(models.Model):
     id = models.AutoField(primary_key=True)
     words = models.TextField(blank=True, null=True)  # This field type is a guess.
+    qtstopwords = models.IntegerField(blank=True, null=True)
+    qtadverbios = models.IntegerField(blank=True, null=True)
+    qttokens = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -134,7 +143,7 @@ class Global(models.Model):
 class Package(models.Model):
     idpackages = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True, default="", null=False)
-    
+
     def __str__(self):
         return self.name
     
