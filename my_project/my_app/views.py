@@ -10,7 +10,7 @@ import os
 import sys
 import json
 
-import my_app.archive as archive
+import my_app.ri_vetorial.archive as archive
 
 # Create your views here.
 

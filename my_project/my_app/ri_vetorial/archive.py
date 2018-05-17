@@ -3,11 +3,11 @@
 import json
 
 # Importando arquivos
-import my_app.lex as lex
-import my_app.ocr as ocr
-import my_app.pdf_read as pdf_read
-import my_app.docx_read as docx_read
-import my_app.html_read as html_read
+import my_app.ri_vetorial.lex as lex
+import my_app.ri_vetorial.ocr as ocr
+import my_app.ri_vetorial.pdf_read as pdf_read
+import my_app.ri_vetorial.docx_read as docx_read
+import my_app.ri_vetorial.html_read as html_read
 from operator import itemgetter
 
 def sort_dic(dic, indice=0):
@@ -72,5 +72,5 @@ def get_frequency2(listTokens, frequencyWord):
         
         return (dict(sort_dic(frequencyDocument)), frequencyWord)
             
-if __name__ =="__main__":
+if __name__ =="__main__d":
     get_text("jkak.pdf")
