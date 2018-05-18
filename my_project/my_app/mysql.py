@@ -22,6 +22,7 @@ def update_global_remove( nameDocument = '' ):
     tokens = json.loads(document[0]['tokens'])
 
     allwords = json.loads(Global.objects.values('words').distinct()[0]['words'])
+    qt_document = json.loads(Global.objects.values('qtdocument').distinct()[0]['qtdocument'])
     qt_stopwords = int( Global.objects.values('qtstopwords').distinct()[0]['qtstopwords'] ) - int( document[0]['qtstopwordstotal'] )
     qt_adverbios = int( Global.objects.values('qtadverbios').distinct()[0]['qtadverbios'] ) - int( document[0]['qtadverbiostotal'] )
     qt_tokens = int( Global.objects.values('qttokens').distinct()[0]['qttokens'] ) - int( document[0]['qttoktotal'] )
@@ -32,10 +33,16 @@ def update_global_remove( nameDocument = '' ):
             allwords[key] -= tokens[key]
             if ( allwords[key] == 0 ):
                 allwords.pop(key)
+            
+        if ( key in qt_document ):
+            qt_document[key] -= 1
+            if ( qt_document[key] == 0 ):
+                qt_document.pop(key)
     
     print('\nallwords from global >>', allwords)
     Global(id=1, words=json.dumps(allwords, ensure_ascii=False),\
-        qtstopwords=qt_stopwords, qtadverbios=qt_adverbios, qttokens=qt_tokens ).save()
+        qtstopwords=qt_stopwords, qtadverbios=qt_adverbios, qttokens=qt_tokens,\
+        qtdocument=json.dumps(qt_document, ensure_ascii=False) ).save()
     return True
 
 def update_global_insert( nameDocument = '' ):
@@ -53,6 +60,7 @@ def update_global_insert( nameDocument = '' ):
     tokens = json.loads(document[0]['tokens'])
 
     allwords = json.loads(Global.objects.values('words').distinct()[0]['words'])
+    qt_document = json.loads(Global.objects.values('qtdocument').distinct()[0]['qtdocument'])
     qt_stopwords = int( Global.objects.values('qtstopwords').distinct()[0]['qtstopwords'] ) + int( document[0]['qtstopwordstotal'] )
     qt_adverbios = int( Global.objects.values('qtadverbios').distinct()[0]['qtadverbios'] ) + int( document[0]['qtadverbiostotal'] )
     qt_tokens = int( Global.objects.values('qttokens').distinct()[0]['qttokens'] ) + int( document[0]['qttoktotal'] )
@@ -63,19 +71,28 @@ def update_global_insert( nameDocument = '' ):
             allwords[key] += tokens[key]
         else:
             allwords[key] = tokens[key]
+            
+        if ( key in qt_document ):
+            qt_document[key] += 1
+        else:
+            qt_document[key] = 1
+
     
     print('\nallwords from global >>', allwords)
     Global(id=1, words=json.dumps(allwords, ensure_ascii=False),\
-        qtstopwords=qt_stopwords, qtadverbios=qt_adverbios, qttokens=qt_tokens ).save()
+        qtstopwords=qt_stopwords, qtadverbios=qt_adverbios, qttokens=qt_tokens,\
+        qtdocument=json.dumps(qt_document, ensure_ascii=False)  ).save()
     return True
 
 def update_global_all():
     documents = Documents.objects.values('nome').distinct()
 
     Global(id=1, words=json.dumps({}, ensure_ascii=False),\
-        qtstopwords = 0, qtadverbios = 0, qttokens = 0 ).save()
+        qtstopwords = 0, qtadverbios = 0, qttokens = 0,\
+        qtdocument=json.dumps({}, ensure_ascii=False) ).save()
     for doc in documents:
         update_global_insert( doc['nome'] )
+    return True
     
 def remove_document( name ):
     pass

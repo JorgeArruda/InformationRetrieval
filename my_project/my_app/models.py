@@ -134,6 +134,7 @@ class Global(models.Model):
     qtstopwords = models.IntegerField(blank=True, null=True)
     qtadverbios = models.IntegerField(blank=True, null=True)
     qttokens = models.IntegerField(blank=True, null=True)
+    qtdocument = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
