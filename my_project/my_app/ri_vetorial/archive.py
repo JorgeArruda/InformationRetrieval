@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 from operator import itemgetter
+import math
 
 # Importando arquivos
 import my_app.ri_vetorial.lex as lex
@@ -33,6 +34,27 @@ def get_text(name, path = '/'):
        print("No such file or directory: ",path+name)
        return ' '
 
+def get_tf( frequency, qtTokens ):
+    if ( type(frequency) != dict ):
+        print( '\n---Tokens não é uma lista!', frequency)
+    if ( len(frequency) == 0 ):
+        print( '\n---Lista de tokens vazia!', frequency)
+    tf = {}
+    if qtTokens != 0:
+        for key in frequency:
+            tf[key] = frequency[key] / qtTokens
+    return tf
+
+def get_tfLog( frequency ):
+    if ( type(frequency) != dict ):
+        print( '\n---Tokens não é uma lista!', frequency)
+    if ( len(frequency) == 0 ):
+        print( '\n---Lista de tokens vazia!', frequency)
+    tfLog = {}
+    for key in frequency:
+        tfLog[key] = math.log(1 + frequency[key])
+    return tfLog
+
 def get_tokens(text, language='portuguese'):
     if type(text) != str:
         return "Erro, argument text != string"
@@ -42,40 +64,41 @@ def remove_stopwords( tokens ):
     "Remove stopwords e verifica a quantidade removida. Return {'tokens', 'qt_stopwords', 'qt_stopwords_total', 'qt_adverbios', 'qt_adverbios_total'}"
     if ( type(tokens) != dict ):
         print( '\n---Tokens não é uma lista!', tokens)
-        return False
     if ( len(tokens) == 0 ):
         print( '\n---Lista de tokens vazia!', tokens)
-        return False
 
-    stopwords = stop().stopwords
-    adverbios = stop().adverbios
-    
     qt_stopwords = qt_stopwords_total = 0
     qt_adverbios = qt_adverbios_total = 0
     qt_tok_total = qt_tok = 0
 
     max_tf = 0
     new_tokens = {}
-    for key in tokens:
-        qt_tok_total += tokens[key]
-        qt_tok += 1
-        if ( key in stopwords ):
-            qt_stopwords += 1
-            qt_stopwords_total += tokens[key]
-            # tokens.pop(key)
-        elif ( key in adverbios ):
-            qt_adverbios += 1
-            qt_adverbios_total += tokens[key]
-            # tokens.pop(key)
-        else:
-            if tokens[key] > max_tf:
-                max_tf = tokens[key]
-            new_tokens[key] = tokens[key]
-    print( '\n\t%d Stopwords e %d adverbios removidos.' % (qt_stopwords_total, qt_adverbios_total) )
+
+    if ( not(type(tokens) != dict or len(tokens) == 0) ):
+        stopwords = stop().stopwords
+        adverbios = stop().adverbios
+        
+        for key in tokens:
+            qt_tok_total += tokens[key]
+            qt_tok += 1
+            if ( key in stopwords ):
+                qt_stopwords += 1
+                qt_stopwords_total += tokens[key]
+                # tokens.pop(key)
+            elif ( key in adverbios ):
+                qt_adverbios += 1
+                qt_adverbios_total += tokens[key]
+                # tokens.pop(key)
+            else:
+                if tokens[key] > max_tf:
+                    max_tf = tokens[key]
+                new_tokens[key] = tokens[key]
+        print( '\n\t%d Stopwords e %d adverbios removidos.' % (qt_stopwords_total, qt_adverbios_total) )
     return {'tokens': new_tokens,\
         'qt_stopwords':qt_stopwords, 'qt_stopwords_total': qt_stopwords_total,\
         'qt_adverbios': qt_adverbios, 'qt_adverbios_total': qt_adverbios_total,\
         'qt_tok': qt_tok, 'qt_tok_total': qt_tok_total, 'max':max_tf }
+    
 
 def get_frequency(listTokens):
     "Vare a lista de tokens do documento, retorna a frequência. return frequencyDocument"

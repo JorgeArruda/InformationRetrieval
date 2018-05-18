@@ -112,36 +112,37 @@ class DjangoSession(models.Model):
 
 
 class Documents(models.Model):
-    id = models.AutoField(primary_key=True)
-    nome = models.CharField(max_length=255)
-    texto = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=255)
+    text = models.TextField(blank=True, null=True)
     tokens = models.TextField(blank=True, null=True)  # This field type is a guess.
-    qtstopwords = models.IntegerField(blank=True, null=True)
-    qtstopwordstotal = models.IntegerField(blank=True, null=True)
-    qtadverbios = models.IntegerField(blank=True, null=True)
-    qtadverbiostotal = models.IntegerField(blank=True, null=True)
-    qttok = models.IntegerField(blank=True, null=True)
-    qttoktotal = models.IntegerField(blank=True, null=True)
-    tfnormalized = models.TextField(blank=True, null=True)  # This field type is a guess.
+    qtStopwords = models.IntegerField(db_column='qtStopwords', blank=True, null=True)  # Field name made lowercase.
+    qtStopwordsTotal = models.IntegerField(db_column='qtStopwordsTotal', blank=True, null=True)  # Field name made lowercase.
+    qtAdverbios = models.IntegerField(db_column='qtAdverbios', blank=True, null=True)  # Field name made lowercase.
+    qtAdverbiosTotal = models.IntegerField(db_column='qtAdverbiosTotal', blank=True, null=True)  # Field name made lowercase.
+    qtToken = models.IntegerField(db_column='qtToken', blank=True, null=True)  # Field name made lowercase.
+    qtTokenTotal = models.IntegerField(db_column='qtTokenTotal', blank=True, null=True)  # Field name made lowercase.
+    tf = models.TextField(blank=True, null=True)  # This field type is a guess.
+    tfLog = models.TextField(db_column='logNormalization', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    tfDouble = models.TextField(db_column='doubleNormalization', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     max = models.IntegerField(blank=True, null=True)
-
+    
     class Meta:
         managed = False
         db_table = 'documents'
 
 
 class Global(models.Model):
-    id = models.AutoField(primary_key=True)
     words = models.TextField(blank=True, null=True)  # This field type is a guess.
-    qtstopwords = models.IntegerField(blank=True, null=True)
-    qtadverbios = models.IntegerField(blank=True, null=True)
-    qttokens = models.IntegerField(blank=True, null=True)
-    qtdocument = models.TextField(blank=True, null=True)  # This field type is a guess.
+    qtStopwords = models.IntegerField(db_column='qtStopwords', blank=True, null=True)  # Field name made lowercase.
+    qtAdverbios = models.IntegerField(db_column='qtAdverbios', blank=True, null=True)  # Field name made lowercase.
+    qtTokens = models.IntegerField(db_column='qtTokens', blank=True, null=True)  # Field name made lowercase.
+    qtDocument = models.TextField(db_column='qtDocument', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     idf = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
         db_table = 'global'
+
 
 
 class Package(models.Model):

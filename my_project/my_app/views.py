@@ -16,7 +16,7 @@ import my_app.mysql as mysql
 # Create your views here.
 
 def home(request):
-    documents = Documents.objects.values('nome').distinct()
+    documents = Documents.objects.values('name').distinct()
     return render(request, 'my_app/home.html', { 'documents': documents })
 
 @csrf_exempt
@@ -32,9 +32,9 @@ def upload_drive(request):
 
         # Verifica se o arquivo já existe no bd
         filename = request.POST['filename']
-        documents = Documents.objects.values('nome').filter(nome=filename)
+        documents = Documents.objects.values('name').filter(name=filename)
         if ( len(documents) != 0 ):
-            return JsonResponse({"nome": filename, "status": 'false'})
+            return JsonResponse({"name": filename, "status": 'false'})
 
         # Save file in folder 'media'
         target = os.path.join(target_folder, filename)
@@ -47,7 +47,7 @@ def upload_drive(request):
         # Salva o novo documento no db
         mysql.insert_document( filename, text )
 
-        return JsonResponse({"nome": filename, "status": 'true'})
+        return JsonResponse({"name": filename, "status": 'true'})
     else:
         return HttpResponse(status=500)
     return HttpResponse(status=200)
@@ -55,7 +55,7 @@ def upload_drive(request):
 @csrf_exempt
 def getdocument(request):
     name = request.POST['name']
-    tokens = Documents.objects.values('tokens').filter(nome=name)
+    tokens = Documents.objects.values('tokens').filter(name=name)
     if len(tokens) == 0:
         return render(request, 'my_app/show_document.html', { 'words': {} })
     else:
