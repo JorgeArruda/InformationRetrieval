@@ -4,9 +4,41 @@ from .models import Documents
 from .models import Global
 
 import json
+import math
 
 import my_app.ri_vetorial.archive as archive
 
+def update_global_idf():
+    "Atualiza o idf global"
+
+    qt_document = json.loads(Global.objects.values('qtdocument').distinct()[0]['qtdocument'])
+    gl = Global.objects.values().distinct()[0]
+    idf_word = {}
+    for key in qt_document :
+        qt_total = len(Documents.objects.values('nome').distinct())
+        idf_word[key] = math.log( qt_total / qt_document[key], 2 )
+
+    gl['idf'] = json.dumps(idf_word, ensure_ascii=False)
+    Global(id=1, words=gl['words'],\
+        qtstopwords=gl['qtstopwords'], qtadverbios=gl['qtadverbios'], qttokens=gl['qttokens'],\
+        qtdocument=gl['qtdocument'],\
+        idf=gl['idf'] ).save()
+    return True
+
+def update_tf_normalized( nameDocument ):
+    id_doc = Documents.objects.values('id', 'tokens').filter( nome=nameDocument )
+    if ( len(id_doc) == 0 ):
+        print('\n\tNenhum documento alterado, nome inexistente.')
+        return False
+    tf_normalized = {}
+    for token in id_doc[0]['tokens']:
+        pass
+        
+    document_edit = Documents.objects.get( id = id_doc[0]['id'] ) # object to update
+    document_edit.tfnormalized = 'New name' # update name
+    document_edit.save() # save object
+    
+    
 def update_global_remove( nameDocument = '' ):
     "Atualiza a frequencia global de palavras removendo os tokens do documento a ser excluido"
     if (nameDocument == ''):
@@ -76,12 +108,11 @@ def update_global_insert( nameDocument = '' ):
             qt_document[key] += 1
         else:
             qt_document[key] = 1
-
     
     print('\nallwords from global >>', allwords)
     Global(id=1, words=json.dumps(allwords, ensure_ascii=False),\
         qtstopwords=qt_stopwords, qtadverbios=qt_adverbios, qttokens=qt_tokens,\
-        qtdocument=json.dumps(qt_document, ensure_ascii=False)  ).save()
+        qtdocument=json.dumps(qt_document, ensure_ascii=False) ).save()
     return True
 
 def update_global_all():
@@ -89,9 +120,12 @@ def update_global_all():
 
     Global(id=1, words=json.dumps({}, ensure_ascii=False),\
         qtstopwords = 0, qtadverbios = 0, qttokens = 0,\
-        qtdocument=json.dumps({}, ensure_ascii=False) ).save()
+        qtdocument=json.dumps({}, ensure_ascii=False),\
+        idf=json.dumps({}, ensure_ascii=False) ).save()
     for doc in documents:
         update_global_insert( doc['nome'] )
+
+    update_global_idf()
     return True
     
 def remove_document( name ):
@@ -112,8 +146,9 @@ def insert_document( filename, text ):
     Documents(nome=filename, texto=text, tokens=json.dumps(tokens['tokens'], ensure_ascii=False),\
         qtstopwords=tokens['qt_stopwords'], qtstopwordstotal=tokens['qt_stopwords_total'],\
         qtadverbios=tokens['qt_adverbios'], qtadverbiostotal=tokens['qt_adverbios_total'],\
-        qttok = tokens['qt_tok'], qttoktotal = tokens['qt_tok_total']  ).save()
+        qttok = tokens['qt_tok'], qttoktotal = tokens['qt_tok_total'], max=tokens['max'] ).save()
 
     # # Salva a frequencia global atualizada
     update_global_insert( filename )
+    update_global_idf()
     # Global(id=1, words=json.dumps(words, ensure_ascii=False)).save()

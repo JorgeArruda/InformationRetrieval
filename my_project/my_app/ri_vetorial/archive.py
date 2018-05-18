@@ -54,6 +54,7 @@ def remove_stopwords( tokens ):
     qt_adverbios = qt_adverbios_total = 0
     qt_tok_total = qt_tok = 0
 
+    max_tf = 0
     new_tokens = {}
     for key in tokens:
         qt_tok_total += tokens[key]
@@ -67,25 +68,26 @@ def remove_stopwords( tokens ):
             qt_adverbios_total += tokens[key]
             # tokens.pop(key)
         else:
+            if tokens[key] > max_tf:
+                max_tf = tokens[key]
             new_tokens[key] = tokens[key]
     print( '\n\t%d Stopwords e %d adverbios removidos.' % (qt_stopwords_total, qt_adverbios_total) )
     return {'tokens': new_tokens,\
         'qt_stopwords':qt_stopwords, 'qt_stopwords_total': qt_stopwords_total,\
         'qt_adverbios': qt_adverbios, 'qt_adverbios_total': qt_adverbios_total,\
-        'qt_tok': qt_tok, 'qt_tok_total': qt_tok_total}
+        'qt_tok': qt_tok, 'qt_tok_total': qt_tok_total, 'max':max_tf }
 
 def get_frequency(listTokens):
-        "Vare a lista de tokens do documento, retorna a frequência. return frequencyDocument"
-
-        frequencyDocument = {}
-        for token in listTokens:
-            print(token)
-            if token in frequencyDocument:
-                frequencyDocument[ token ]+=1
-            else:
-                frequencyDocument[ token ]=1
-        
-        return dict(sort_dic(frequencyDocument))
+    "Vare a lista de tokens do documento, retorna a frequência. return frequencyDocument"
+    frequencyDocument = {}
+    for token in listTokens:
+        print(token)
+        if token in frequencyDocument:
+            frequencyDocument[ token ]+=1
+        else:
+            frequencyDocument[ token ]=1
+    
+    return dict(sort_dic(frequencyDocument))
 
 if __name__ =="__main__d":
     get_text("jkak.pdf")

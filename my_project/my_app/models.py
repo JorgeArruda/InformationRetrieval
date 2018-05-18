@@ -122,6 +122,8 @@ class Documents(models.Model):
     qtadverbiostotal = models.IntegerField(blank=True, null=True)
     qttok = models.IntegerField(blank=True, null=True)
     qttoktotal = models.IntegerField(blank=True, null=True)
+    tfnormalized = models.TextField(blank=True, null=True)  # This field type is a guess.
+    max = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -135,6 +137,7 @@ class Global(models.Model):
     qtadverbios = models.IntegerField(blank=True, null=True)
     qttokens = models.IntegerField(blank=True, null=True)
     qtdocument = models.TextField(blank=True, null=True)  # This field type is a guess.
+    idf = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
