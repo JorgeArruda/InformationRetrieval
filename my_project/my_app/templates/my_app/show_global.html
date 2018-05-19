@@ -1,65 +1,60 @@
 {% for var in info %}
-    <div id="div-global-table" style="margin: 10px; ">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Qt. Words</th>
-                    <th scope="col">Qt. Stopwords</th>
-                    <th scope="col">Qt. Adverbios</th>
-                    <th scope="col">Qt. Tokens</th>
-                    <th scope="col">Qt. Document</th>
-                </tr>
-            </thead>
-            <thead>
-                <tr>
-                    <td scope="row"> </td>
-                    <td> {{ var.qtWords }} </td>
-                    <td> {{ var.qtStopwords }} </td>
-                    <td> {{ var.qtAdverbios  }} </td>
-                    <td> {{ var.qtTokens }} </td>
-                    <td> {{ var.qtDocument }} </td>
-                </tr>
-                <tr>
-                    <td scope="row">%</td>
-                    <td> {{ var.qtWordsP }}% </td>
-                    <td> {{ var.qtStopwordsP }}% </td>
-                    <td> {{ var.qtAdverbiosP  }}% </td>
-                    <td> {{ var.qtTokensP }}% </td>
-                    <td> - </td>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div id="div-document-table" style="margin: 10px; pxwidth: 100%; height: 100%;">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Qt. Words</th>
-                    <th scope="col">Qt. Stopwords</th>
-                    <th scope="col">Qt. Adverbios</th>
-                    <th scope="col">Qt. Tokens</th>
-                </tr>
-            </thead>
-            <thead>
-                <tr>
-                    <td scope="row">1</td>
-                    <td> exe.doc </td>
-                    <td> 50% </td>
-                    <td> 25% </td>
-                    <td> 100% </td>
-                    <td> 25% </td>
-                </tr>
-                <!-- {% for token in words %}
+    <div id="div-tables">
+        <div id="div-global-table" style="margin: 10px; ">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td scope="row">{{ token.indice }}</td>
-                        <td> {{ token.document }} </td>
-                        <td> {{ token.frequency }} </td>
+                        <th scope="col">#</th>
+                        <th scope="col">Qt. Words</th>
+                        <th scope="col">Qt. Stopwords</th>
+                        <th scope="col">Qt. Adverbios</th>
+                        <th scope="col">Qt. Tokens</th>
+                        <th scope="col">Qt. Document</th>
                     </tr>
-                {% endfor %} -->
-            </thead>
-        </table>
+                </thead>
+                <thead>
+                    <tr>
+                        <td scope="row"> </td>
+                        <!-- <td> {{ var.qtWords }} - {{ var.qtWordsP }}% </td> -->
+                        <td> {{ var.qtWords }} </td>
+                        <td> {{ var.qtStopwords }} - {{ var.qtStopwordsP }}% </td>
+                        <td> {{ var.qtAdverbios }} - {{ var.qtAdverbiosP }}% </td>
+                        <td> {{ var.qtTokens }} - {{ var.qtTokensP }}% </td>
+                        <td> {{ var.qtDocument }} </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- <div id="div-document-table" style="margin: 10px; width: 100%; height: 100%;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Qt. Words</th>
+                        <th scope="col">Qt. Stopwords</th>
+                        <th scope="col">Qt. Adverbios</th>
+                        <th scope="col">Qt. Tokens</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        <td scope="row">1</td>
+                        <td> exe.doc </td>
+                        <td> 50% </td>
+                        <td> 25% </td>
+                        <td> 100% </td>
+                        <td> 25% </td>
+                    </tr>
+                    {% for token in words %}
+                        <tr>
+                            <td scope="row">{{ token.indice }}</td>
+                            <td> {{ token.document }} </td>
+                            <td> {{ token.frequency }} </td>
+                        </tr>
+                    {% endfor %}
+                </thead>
+            </table>
+        </div> -->
     </div>
 {% endfor %}

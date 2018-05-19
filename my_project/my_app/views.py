@@ -57,18 +57,26 @@ def upload_drive(request):
 @csrf_exempt
 def getdocument(request):
     name = request.POST['name']
-    tokens = Documents.objects.values('tokens').filter(name=name)
-    if len(tokens) == 0:
+    document = Documents.objects.values('tokens', 'tf', 'tfLog', 'tfDouble').filter(name=name)
+    if len(document) == 0:
         return render(request, 'my_app/show_document.html', { 'words': {} })
     else:
-        tokens = json.loads(tokens[0]['tokens'])
-        words = []
+        document = document[0]
+        tokens = json.loads( document['tokens'] )
+        tf = json.loads( document['tf'] )
+        tfLog = json.loads( document['tfLog'] )
+        tfDouble = json.loads( document['tfDouble'] )
+        words = archive.sort_dic( tokens )
+        line = []
         var = 1
-        for word in tokens:
-            words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
+        for word in words:
+            line.append({'indice':var, 'word':word[0], 'frequency': word[1], 'tf': round(tf[word[0]], 2), 'tfLog': round(tfLog[word[0]], 2), 'tfDouble': round(tfDouble[word[0]], 2) } )
             var+=1
         # print(words)
-        return render(request, 'my_app/show_document.html', { 'words': words })
+        return render(request, 'my_app/show_document.html', { 'words': line })
+# tf = mode
+# tfLog = m
+# tfDouble 
 
 @csrf_exempt
 def getglobal(request):
@@ -87,12 +95,7 @@ def getglobal(request):
         'qtAdverbiosP': iround( (values['qtAdverbios']/values['qtTokens'])*100),\
         'qtTokensP': iround( (qtWords/values['qtTokens'])*100),\
         'qtDocument': qtDocument })
-#     words = mode
-# qtStopwords 
-# qtAdverbios 
-# qtTokens = m
-# qtDocument =
-# idf = models
+
     # tokens = Documents.objects.values('tokens').filter(name=name)
     # if len(tokens) == 0:
     #     return render(request, 'my_app/show_document.html', { 'words': {} })

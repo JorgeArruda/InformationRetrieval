@@ -36,10 +36,8 @@ function row_document_click(event) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             //console.log(xhr.responseText);
             //document.getElementById("div_show").appendChild(xhr.responseText);
-            var xmlString = "<div id='foo'><a href='#'>Link</a><span></span></div>"
             var parser = new DOMParser();
             var doc = parser.parseFromString(xhr.responseText, "text/xml");
-            // doc.firstChild // => <div id="foo">...
             //document.getElementById("div_show").appendChild(doc.firstChild);
             var myNode = document.getElementById("div_show");
             while (myNode.firstChild) {
@@ -64,20 +62,17 @@ function showDocuments() {
         console.log('Ei\n', xhr.status);
         if (xhr.readyState == 4 && xhr.status == 200) {
             console.log('oi\n', xhr.response);
-            // document.getElementById("div_show").appendChild(xhr.responseText);
-            // var xmlString = "<div id='foo'><a href='#'>Link</a><span></span></div>"
-            // var parser = new DOMParser();
-            // var doc = parser.parseFromString(xhr.responseText, "text/xml");
-            // // doc.firstChild // => <div id="foo">...
-            // //document.getElementById("div_show").appendChild(doc.firstChild);
-            // var myNode = document.getElementById("div_show")
-            // while (myNode.firstChild) {
-            //     myNode.removeChild(myNode.firstChild);
-            // }
-            // myNode.insertAdjacentHTML('afterend', xhr.responseText);
-            // var table = document.getElementById("div-document-table");
-            // table.parentNode.removeChild(table);
-            // myNode.appendChild(table);
+            var parser = new DOMParser();
+
+            var myNode = document.getElementById("div_show")
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            myNode.insertAdjacentHTML('afterend', xhr.responseText);
+            var table = document.getElementById("div-tables");
+            table.parentNode.removeChild(table);
+            myNode.appendChild(table);
         }
     };
     xhr.open('post', 'getglobal', true);

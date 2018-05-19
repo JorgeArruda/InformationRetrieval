@@ -1,10 +1,13 @@
-<div id="div-document-table" style="margin: 10px; pxwidth: 100%; height: 100%;">
+<div id="div-document-table" style="margin: 10px; width: 100%; height: 100%;">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Word</th>
                 <th scope="col">Frequency</th>
+                <th scope="col">tf</th>
+                <th scope="col">tf log</th>
+                <th scope="col">tf double</th>
             </tr>
         </thead>
         <thead>
@@ -13,6 +16,9 @@
                     <td scope="row">{{ token.indice }}</td>
                     <td> {{ token.word }} </td>
                     <td> {{ token.frequency }} </td>
+                    <td> {{ token.tf }} </td>
+                    <td> {{ token.tfLog }} </td>
+                    <td> {{ token.tfDouble }} </td>
                 </tr>
             {% endfor %}
         </thead>
