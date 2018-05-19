@@ -67,3 +67,20 @@ def getdocument(request):
             var+=1
         # print(words)
         return render(request, 'my_app/show_document.html', { 'words': words })
+
+@csrf_exempt
+def getglobal(request):
+    name = request.POST['request']
+    print('Get Global', name)
+    # tokens = Documents.objects.values('tokens').filter(name=name)
+    # if len(tokens) == 0:
+    #     return render(request, 'my_app/show_document.html', { 'words': {} })
+    # else:
+    #     tokens = json.loads(tokens[0]['tokens'])
+    #     words = []
+    #     var = 1
+    #     for word in tokens:
+    #         words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
+    #         var+=1
+    #     # print(words)
+    return render(request, 'my_app/show_document.html', { 'words': 'oi' })

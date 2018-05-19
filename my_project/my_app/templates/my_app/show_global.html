@@ -1,20 +1,32 @@
-<div>
+<div style="margin: 10px; ">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Word</th>
-                <th scope="col">Frequency</th>
+                <th scope="col">Qt. Words</th>
+                <th scope="col">Qt. Stopwords</th>
+                <th scope="col">Qt. Adverbios</th>
+                <th scope="col">Qt. Tokens</th>
+                <th scope="col">Qt. Document</th>
             </tr>
         </thead>
         <thead>
-            {% for token in words %}
-                <tr>
-                    <td scope="row">{{ token.indice }}</td>
-                    <td> {{ token.document }} </td>
-                    <td> {{ token.frequency }} </td>
-                </tr>
-            {% endfor %}
+            <tr>
+                <td scope="row"> </td>
+                <td> 20 </td>
+                <td> 10 </td>
+                <td> 5 </td>
+                <td> 5 </td>
+                <td> 3 </td>
+            </tr>
+            <tr>
+                <td scope="row">%</td>
+                <td> 50% </td>
+                <td> 25% </td>
+                <td> 100% </td>
+                <td> 25% </td>
+                <td> - </td>
+            </tr>
         </thead>
     </table>
 </div>
@@ -23,18 +35,29 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Word</th>
-                <th scope="col">Frequency</th>
+                <th scope="col">Name</th>
+                <th scope="col">Qt. Words</th>
+                <th scope="col">Qt. Stopwords</th>
+                <th scope="col">Qt. Adverbios</th>
+                <th scope="col">Qt. Tokens</th>
             </tr>
         </thead>
         <thead>
-            {% for token in words %}
+            <tr>
+                <td scope="row">1</td>
+                <td> exe.doc </td>
+                <td> 50% </td>
+                <td> 25% </td>
+                <td> 100% </td>
+                <td> 25% </td>
+            </tr>
+            <!-- {% for token in words %}
                 <tr>
                     <td scope="row">{{ token.indice }}</td>
                     <td> {{ token.document }} </td>
                     <td> {{ token.frequency }} </td>
                 </tr>
-            {% endfor %}
+            {% endfor %} -->
         </thead>
     </table>
 </div>

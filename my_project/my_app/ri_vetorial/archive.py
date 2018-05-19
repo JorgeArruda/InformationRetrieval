@@ -34,27 +34,6 @@ def get_text(name, path = '/'):
        print("No such file or directory: ",path+name)
        return ' '
 
-def get_tf( frequency, qtTokens ):
-    if ( type(frequency) != dict ):
-        print( '\n---Tokens não é uma lista!', frequency)
-    if ( len(frequency) == 0 ):
-        print( '\n---Lista de tokens vazia!', frequency)
-    tf = {}
-    if qtTokens != 0:
-        for key in frequency:
-            tf[key] = frequency[key] / qtTokens
-    return tf
-
-def get_tfLog( frequency ):
-    if ( type(frequency) != dict ):
-        print( '\n---Tokens não é uma lista!', frequency)
-    if ( len(frequency) == 0 ):
-        print( '\n---Lista de tokens vazia!', frequency)
-    tfLog = {}
-    for key in frequency:
-        tfLog[key] = math.log(1 + frequency[key])
-    return tfLog
-
 def get_tokens(text, language='portuguese'):
     if type(text) != str:
         return "Erro, argument text != string"
@@ -112,5 +91,37 @@ def get_frequency(listTokens):
     
     return dict(sort_dic(frequencyDocument))
 
+def get_tf( frequency, qtTokens ):
+    if ( type(frequency) != dict ):
+        print( '\n---Tokens não é uma lista!', frequency)
+    if ( len(frequency) == 0 ):
+        print( '\n---Lista de tokens vazia!', frequency)
+    tf = {}
+    if qtTokens != 0:
+        for key in frequency:
+            tf[key] = frequency[key] / qtTokens
+    return tf
+
+def get_tfLog( frequency ):
+    if ( type(frequency) != dict ):
+        print( '\n---Tokens não é uma lista!', frequency)
+    if ( len(frequency) == 0 ):
+        print( '\n---Lista de tokens vazia!', frequency)
+    tfLog = {}
+    for key in frequency:
+        tfLog[key] = math.log(1 + frequency[key])
+    return tfLog
+
+def get_tfDouble( frequency, qtMax ):
+    if ( type(frequency) != dict ):
+        print( '\n---Tokens não é uma lista!', frequency)
+    if ( len(frequency) == 0 ):
+        print( '\n---Lista de tokens vazia!', frequency)
+    tfDouble = {}
+    if qtMax != 0:
+        for key in frequency:
+            tfDouble[key] = 0.5 + ( 0.5 * (frequency[key] / qtMax))
+    return tfDouble
+    
 if __name__ =="__main__d":
     get_text("jkak.pdf")

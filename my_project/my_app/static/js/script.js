@@ -60,9 +60,9 @@ function row_document_click(event) {
 function showDocuments() {
     console.log('Show documents request: ');
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.responseText);
+    // xhr.onreadystatechange = function () {
+    //     if (xhr.readyState == 4 && xhr.status == 200) {
+    //         console.log(xhr.responseText);
             //document.getElementById("div_show").appendChild(xhr.responseText);
             // var xmlString = "<div id='foo'><a href='#'>Link</a><span></span></div>"
             // var parser = new DOMParser();
@@ -77,10 +77,10 @@ function showDocuments() {
             // var table = document.getElementById("div-document-table");
             // table.parentNode.removeChild(table);
             // myNode.appendChild(table);
-        }
-    };
+    //     }
+    // };
     xhr.open('post', 'getglobal', true);
     var fd = new FormData();
-    fd.append('request', showDocuments);
+    fd.append('request', 'showDocuments');
     xhr.send(fd);
 }

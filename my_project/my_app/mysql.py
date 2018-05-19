@@ -19,10 +19,15 @@ def update_global_idf():
         idf_word[key] = math.log( qt_total / qt_document[key], 2 )
 
     gl['idf'] = json.dumps(idf_word, ensure_ascii=False)
-    Global(id=1, words=gl['words'],\
-        qtStopwords=gl['qtStopwords'], qtAdverbios=gl['qtAdverbios'], qtTokens=gl['qtTokens'],\
-        qtDocument=gl['qtDocument'],\
-        idf=gl['idf'] ).save()
+
+    document_edit = Global.objects.get( id = gl['id'] ) # object to update
+    document_edit.idf = gl['idf'] # update name
+    document_edit.save() # save object
+
+    # Global(id=1, words=gl['words'],\
+    #     qtStopwords=gl['qtStopwords'], qtAdverbios=gl['qtAdverbios'], qtTokens=gl['qtTokens'],\
+    #     qtDocument=gl['qtDocument'],\
+    #     idf=gl['idf'] ).save()
     return True
 
 def update_tf_normalized( nameDocument ):
@@ -35,7 +40,7 @@ def update_tf_normalized( nameDocument ):
         pass
         
     document_edit = Documents.objects.get( id = id_doc[0]['id'] ) # object to update
-    document_edit.tfnormalized = 'New name' # update name
+    document_edit.idf = 'New name' # update name
     document_edit.save() # save object
     
     
@@ -144,10 +149,13 @@ def insert_document( filename, texto ):
     # Calcula a tf ajustada pelo tamanho do documento
     tf_adjusted = archive.get_tf( token['tokens'], token['qt_tok_total'] )
     tf_log = archive.get_tfLog( token['tokens'] )
+    tf_double = archive.get_tfDouble( token['tokens'], token['max'] )
+
     # Salva o novo documento no db
     Documents( name=filename, text=texto, tokens=json.dumps(token['tokens'], ensure_ascii=False),\
         tf=json.dumps( tf_adjusted, ensure_ascii=False),\
         tfLog=json.dumps( tf_log, ensure_ascii=False),\
+        tfDouble=json.dumps( tf_double, ensure_ascii=False),\
         qtStopwords=token['qt_stopwords'], qtStopwordsTotal=token['qt_stopwords_total'],\
         qtAdverbios=token['qt_adverbios'], qtAdverbiosTotal=token['qt_adverbios_total'],\
         qtToken= token['qt_tok'], qtTokenTotal = token['qt_tok_total'], max=token['max'] ).save()
