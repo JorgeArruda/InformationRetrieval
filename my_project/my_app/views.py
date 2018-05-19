@@ -9,6 +9,8 @@ import time
 import os
 import sys
 import json
+import math
+import numpy as np
 
 import my_app.ri_vetorial.archive as archive
 import my_app.mysql as mysql
@@ -72,6 +74,25 @@ def getdocument(request):
 def getglobal(request):
     name = request.POST['request']
     print('Get Global', name)
+    values = Global.objects.values().distinct()[0]
+    qtDocument = len(Documents.objects.values('name').distinct())
+    qtWords = ( values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'] )
+    info = []
+    info.append({ 'qtWords': values['qtTokens'],\
+        'qtStopwords': values['qtStopwords'],\
+        'qtAdverbios': values['qtAdverbios'],\
+        'qtTokens': qtWords,\
+        'qtWordsP': 100,\
+        'qtStopwordsP': iround( (values['qtStopwords']/values['qtTokens'])*100),\
+        'qtAdverbiosP': iround( (values['qtAdverbios']/values['qtTokens'])*100),\
+        'qtTokensP': iround( (qtWords/values['qtTokens'])*100),\
+        'qtDocument': qtDocument })
+#     words = mode
+# qtStopwords 
+# qtAdverbios 
+# qtTokens = m
+# qtDocument =
+# idf = models
     # tokens = Documents.objects.values('tokens').filter(name=name)
     # if len(tokens) == 0:
     #     return render(request, 'my_app/show_document.html', { 'words': {} })
@@ -83,4 +104,16 @@ def getglobal(request):
     #         words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
     #         var+=1
     #     # print(words)
-    return render(request, 'my_app/show_document.html', { 'words': 'oi' })
+    print('info', info)
+    print(render(request, 'my_app/show_global.html', { 'info': info }))
+    return render(request, 'my_app/show_global.html', { 'info': info })
+
+
+def roundd(val,digits):
+   return round(val+10**(-len(str(val))-1), digits)
+
+def iround(x):
+    """iround(number) -> integer
+    Round a number to the nearest integer."""
+    y = round(x) - .5
+    return int(y) + (y > 0)

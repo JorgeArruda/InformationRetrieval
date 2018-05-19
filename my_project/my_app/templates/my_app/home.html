@@ -22,10 +22,7 @@
                     <label for="inputFile">Upload file</label>
                     <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
                 </form>
-                <form class="form-signin" method="POST">
-                    {% csrf_token %}
-                    <button onclick="showDocuments()">All documents</button>
-                </form>
+                <button onclick="showDocuments()">All documents</button>
                 <form class="form-signin" method="POST">
                     {% csrf_token %}
                     <button onclick="showDocuments()">Atualizar tudo</button>
