@@ -122,6 +122,18 @@ def get_tfDouble( frequency, qtMax ):
         for key in frequency:
             tfDouble[key] = 0.5 + ( 0.5 * (frequency[key] / qtMax))
     return tfDouble
-    
+
+def get_idf( fDocument, numDocument ):
+    if ( type(fDocument) != dict ):
+        print( '\n---Tokens não é uma lista!', fDocument)
+    if ( len(fDocument) == 0 ):
+        print( '\n---Lista de tokens vazia!', fDocument)
+
+    idf_word = {}
+    for key in fDocument:
+        idf_word[key] = math.log( numDocument / fDocument[key], 2 )
+
+    return idf_word
+
 if __name__ =="__main__d":
     get_text("jkak.pdf")

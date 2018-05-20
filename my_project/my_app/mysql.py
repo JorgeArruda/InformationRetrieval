@@ -9,40 +9,19 @@ import math
 import my_app.ri_vetorial.archive as archive
 
 def update_global_idf():
-    "Atualiza o idf global"
+    "Atualiza o idf da coleção"
 
     qt_document = json.loads(Global.objects.values('qtDocument').distinct()[0]['qtDocument'])
-    gl = Global.objects.values().distinct()[0]
-    idf_word = {}
-    for key in qt_document :
-        qt_total = len(Documents.objects.values('name').distinct())
-        idf_word[key] = math.log( qt_total / qt_document[key], 2 )
+    qt_total = len(Documents.objects.values('name').distinct())
+    colecao = Global.objects.values().distinct()[0]
 
-    gl['idf'] = json.dumps(idf_word, ensure_ascii=False)
+    colecao['idf'] = json.dumps( archive.get_idf( qt_document, qt_total ), ensure_ascii=False)
 
-    document_edit = Global.objects.get( id = gl['id'] ) # object to update
-    document_edit.idf = gl['idf'] # update name
+    document_edit = Global.objects.get( id = colecao['id'] ) # object to update
+    document_edit.idf = colecao['idf'] # update idf
     document_edit.save() # save object
 
-    # Global(id=1, words=gl['words'],\
-    #     qtStopwords=gl['qtStopwords'], qtAdverbios=gl['qtAdverbios'], qtTokens=gl['qtTokens'],\
-    #     qtDocument=gl['qtDocument'],\
-    #     idf=gl['idf'] ).save()
-    return True
-
-def update_tf_normalized( nameDocument ):
-    id_doc = Documents.objects.values('id', 'tokens').filter( name=nameDocument )
-    if ( len(id_doc) == 0 ):
-        print('\n\tNenhum documento alterado, nome inexistente.')
-        return False
-    tf_normalized = {}
-    for token in id_doc[0]['tokens']:
-        pass
-        
-    document_edit = Documents.objects.get( id = id_doc[0]['id'] ) # object to update
-    document_edit.idf = 'New name' # update name
-    document_edit.save() # save object
-    
+    return True    
     
 def update_global_remove( nameDocument = '' ):
     "Atualiza a frequencia global de palavras removendo os tokens do documento a ser excluido"
