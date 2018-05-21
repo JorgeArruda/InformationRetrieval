@@ -80,3 +80,12 @@ function showDocuments() {
     fd.append('request', 'showDocuments');
     xhr.send(fd);
 }
+
+function updateAll() {
+    console.log('Atualizar todos os dados armazenados da coleção');
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', 'updateall', true);
+    var fd = new FormData();
+    fd.append('request', 'updateAll');
+    xhr.send(fd);
+}

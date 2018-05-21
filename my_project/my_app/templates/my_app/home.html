@@ -22,10 +22,10 @@
                     <label for="inputFile">Upload file</label>
                     <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
                 </form>
-                <button onclick="showDocuments()">All documents</button>
+                <button onclick="showDocuments()">Dados da coleção</button>
                 <form class="form-signin" method="POST">
                     {% csrf_token %}
-                    <button onclick="showDocuments()">Atualizar tudo</button>
+                    <button onclick="updateAll()">Atualizar dados</button>
                 </form>
             </div>
             <!-- <div style="width: 120px;" class="progress">

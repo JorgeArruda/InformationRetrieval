@@ -74,9 +74,6 @@ def getdocument(request):
             var+=1
         # print(words)
         return render(request, 'my_app/show_document.html', { 'words': line })
-# tf = mode
-# tfLog = m
-# tfDouble 
 
 @csrf_exempt
 def getglobal(request):
@@ -86,31 +83,36 @@ def getglobal(request):
     qtDocument = len(Documents.objects.values('name').distinct())
     qtWords = ( values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'] )
     info = []
-    info.append({ 'qtWords': values['qtTokens'],\
-        'qtStopwords': values['qtStopwords'],\
-        'qtAdverbios': values['qtAdverbios'],\
-        'qtTokens': qtWords,\
-        'qtWordsP': 100,\
-        'qtStopwordsP': iround( (values['qtStopwords']/values['qtTokens'])*100),\
-        'qtAdverbiosP': iround( (values['qtAdverbios']/values['qtTokens'])*100),\
-        'qtTokensP': iround( (qtWords/values['qtTokens'])*100),\
-        'qtDocument': qtDocument })
+    if ( qtDocument != 0 ):
+        info.append({ 'qtWords': values['qtTokens'],\
+            'qtStopwords': values['qtStopwords'],\
+            'qtAdverbios': values['qtAdverbios'],\
+            'qtTokens': qtWords,\
+            'qtWordsP': 100,\
+            'qtStopwordsP': iround( (values['qtStopwords']/values['qtTokens'])*100),\
+            'qtAdverbiosP': iround( (values['qtAdverbios']/values['qtTokens'])*100),\
+            'qtTokensP': iround( (qtWords/values['qtTokens'])*100),\
+            'qtDocument': qtDocument })
+    else:
+        info.append({ 'qtWords': 0,\
+            'qtStopwords': 0,\
+            'qtAdverbios': 0,\
+            'qtTokens': 0,\
+            'qtWordsP': 0,\
+            'qtStopwordsP': 0,\
+            'qtAdverbiosP': 0,\
+            'qtTokensP': 0,\
+            'qtDocument': 0 })
 
-    # tokens = Documents.objects.values('tokens').filter(name=name)
-    # if len(tokens) == 0:
-    #     return render(request, 'my_app/show_document.html', { 'words': {} })
-    # else:
-    #     tokens = json.loads(tokens[0]['tokens'])
-    #     words = []
-    #     var = 1
-    #     for word in tokens:
-    #         words.append({'indice':var, 'word':word, 'frequency': tokens[word]})
-    #         var+=1
-    #     # print(words)
     print('info', info)
     print(render(request, 'my_app/show_global.html', { 'info': info }))
     return render(request, 'my_app/show_global.html', { 'info': info })
 
+@csrf_exempt
+def updateall(request):
+    mysql.update_global_all()
+    documents = Documents.objects.values('name').distinct()
+    return render(request, 'my_app/home.html', { 'documents': documents })
 
 def roundd(val,digits):
    return round(val+10**(-len(str(val))-1), digits)
