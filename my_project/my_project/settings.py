@@ -65,7 +65,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
-    },c
+    },
 ]
 
 WSGI_APPLICATION = 'my_project.wsgi.application'
