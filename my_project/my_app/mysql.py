@@ -112,8 +112,16 @@ def update_global_all():
     update_global_idf()
     return True
     
-def remove_document( name ):
-    pass
+def remove_document( filename ):
+    document = Documents.objects.values('name').filter(name=filename)
+    if ( len(document) != 0 ):
+        return False
+    document = Documents.objects.get( name = filename )
+    document.delete()
+
+    update_global_all()
+    return True
+
 
 def insert_document( filename, texto ):
     # Get global word list

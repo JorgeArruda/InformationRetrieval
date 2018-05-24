@@ -5,3 +5,4 @@ media
 env
 .vscode
 docs
+*.cpython-35.pyc
