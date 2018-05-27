@@ -55,7 +55,7 @@ def update_global_remove( nameDocument = '' ):
             if ( qt_document[key] == 0 ):
                 qt_document.pop(key)
     
-    print('\nallwords from global >>', allwords)
+    # print('\nallwords from global >>', allwords)
     Global(id=1, words=json.dumps(allwords, ensure_ascii=False),\
         qtStopwords=qt_stopwords, qtAdverbios=qt_adverbios, qtTokens=qt_tokens,\
         qtDocument=json.dumps(qt_document, ensure_ascii=False) ).save()
@@ -93,7 +93,7 @@ def update_global_insert( nameDocument = '' ):
         else:
             qt_document[key] = 1
     
-    print('\nallwords from global >>', allwords)
+    # print('\nallwords from global >>', allwords)
     Global(id=1, words=json.dumps(allwords, ensure_ascii=False),\
         qtStopwords=qt_stopwords, qtAdverbios=qt_adverbios, qtTokens=qt_tokens,\
         qtDocument=json.dumps(qt_document, ensure_ascii=False) ).save()
@@ -114,7 +114,7 @@ def update_global_all():
     
 def remove_document( filename ):
     document = Documents.objects.values('name').filter(name=filename)
-    if ( len(document) != 0 ):
+    if ( len(document) == 0 ):
         return False
     document = Documents.objects.get( name = filename )
     document.delete()
@@ -129,7 +129,7 @@ def insert_document( filename, texto ):
 
     # Calcula a frequencia de palavras no documento
     token = archive.get_frequency(archive.get_tokens(texto))
-    print("TOKENS ",token)
+    # print("TOKENS ",token)
 
     # Remove e conta as stopwords removidas
     token = archive.remove_stopwords( token )
