@@ -124,9 +124,6 @@ def remove_document( filename ):
 
 
 def insert_document( filename, texto ):
-    # Get global word list
-    words = json.loads(Global.objects.values('words').distinct()[0]['words'])
-
     # Calcula a frequencia de palavras no documento
     token = archive.get_frequency(archive.get_tokens(texto))
     # print("TOKENS ",token)

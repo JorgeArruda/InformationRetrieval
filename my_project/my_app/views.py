@@ -13,7 +13,7 @@ import math
 import numpy as np
 
 import my_app.ri_vetorial.archive as archive
-import my_app.mysql as mysql
+from .mysql import update_global_all, update_global_idf, update_global_insert, update_global_remove, insert_document, remove_document
 
 # Create your views here.
 
@@ -47,7 +47,7 @@ def upload_drive(request):
         # Analisa o arquivo em busca de textos
         text = archive.get_text(filename, target_folder+'/')
         # Salva o novo documento no db
-        mysql.insert_document( filename, text )
+        insert_document( filename, text )
 
         return JsonResponse({"name": filename, "status": 'true'})
     else:
@@ -110,7 +110,7 @@ def getglobal(request):
 
 @csrf_exempt
 def updateall(request):
-    mysql.update_global_all()
+    update_global_all()
     documents = Documents.objects.values('name').distinct()
     return render(request, 'my_app/home.html', { 'documents': documents })
 

@@ -2,7 +2,8 @@
 *.bak
 __pycache__
 media
-env
+*env
 .vscode
+.idea
 docs
 *.cpython-35.pyc
