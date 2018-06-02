@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Documents, Global
-#from django.contrib import Model
+# from django.contrib import Model
 
 # Register your models here.
 admin.site.register(Documents)

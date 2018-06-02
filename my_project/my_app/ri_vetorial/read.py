@@ -6,14 +6,11 @@ from docx import Document   # Read docx
 import pdftotext    # Read pdf
 from bs4 import BeautifulSoup   # Read html
 import codecs   # Read html
-from PIL import Image   # Importando o módulo Pillow para abrir a imagem no script
-from pytesseract import image_to_string   # Módulo para a utilização da tecnologia OCR
+from PIL import Image   # Importando o módulo para abrir a imagem no script
+from pytesseract import image_to_string   # Módulo para a utilização de OCR
 
 
 class Read(object):
-    def __init__(self):
-        pass
-
     def html(self, name):
         if type(name) != str:
             return "Erro, argument name != string"
@@ -40,4 +37,5 @@ class Read(object):
     def image(self, name):
         if type(name) != str:
             return "Erro, argument name != string"
-        return image_to_string(Image.open(name), lang='por')    # eng = english and por = portuguese
+        # eng = english and por = portuguese
+        return image_to_string(Image.open(name), lang='por')

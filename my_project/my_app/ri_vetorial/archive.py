@@ -41,8 +41,8 @@ def get_tokens(text, language='portuguese'):
 
 
 def remove_stopwords(tokens):
-    "Remove stopwords e verifica a quantidade removida. Return\
-    {'tokens', 'qt_stopwords', 'qt_stopwords_total', 'qt_adverbios', 'qt_adverbios_total'}"
+    "Remove stopwords e verifica a quantidade removida. Return {'tokens', \
+    qt_stopwords', 'qt_stopwords_total', 'qt_adverbios', 'qt_adverbios_total'}"
     if (type(tokens) != dict):
         print('\n---Tokens não é uma lista!', tokens)
     if (len(tokens) == 0):
@@ -74,7 +74,6 @@ def remove_stopwords(tokens):
                 if tokens[key] > max_tf:
                     max_tf = tokens[key]
                 new_tokens[key] = tokens[key]
-        # print('\n\t%d Stopwords e %d adverbios removidos.' % (qt_stopwords_total, qt_adverbios_total))
     return {'tokens': new_tokens,
             'qt_stopwords': qt_stopwords, 'qt_stopwords_total': qt_stopwords_total,
             'qt_adverbios': qt_adverbios, 'qt_adverbios_total': qt_adverbios_total,
@@ -83,6 +82,7 @@ def remove_stopwords(tokens):
 
 def get_frequency(listTokens):
     "Vare a lista de tokens do documento, retorna a frequência."
+
     frequencyDocument = {}
     for token in listTokens:
         # print(token)

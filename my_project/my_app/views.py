@@ -17,9 +17,11 @@ from .mysql import update_global_all, update_global_idf, update_global_insert, u
 
 # Create your views here.
 
+
 def home(request):
     documents = Documents.objects.values('name').distinct()
-    return render(request, 'my_app/home.html', { 'documents': documents })
+    return render(request, 'my_app/home.html', {'documents': documents})
+
 
 @csrf_exempt
 def upload_drive(request):
@@ -35,7 +37,7 @@ def upload_drive(request):
         # Verifica se o arquivo já existe no bd
         filename = request.POST['filename']
         documents = Documents.objects.values('name').filter(name=filename)
-        if ( len(documents) != 0 ):
+        if (len(documents) != 0):
             return JsonResponse({"name": filename, "status": 'false'})
 
         # Save file in folder 'media'
@@ -47,33 +49,37 @@ def upload_drive(request):
         # Analisa o arquivo em busca de textos
         text = archive.get_text(filename, target_folder+'/')
         # Salva o novo documento no db
-        insert_document( filename, text )
+        insert_document(filename, text)
 
         return JsonResponse({"name": filename, "status": 'true'})
     else:
         return HttpResponse(status=500)
     return HttpResponse(status=200)
 
+
 @csrf_exempt
 def getdocument(request):
     name = request.POST['name']
     document = Documents.objects.values('tokens', 'tf', 'tfLog', 'tfDouble').filter(name=name)
     if len(document) == 0:
-        return render(request, 'my_app/show_document.html', { 'words': {} })
+        return render(request, 'my_app/show_document.html', {'words': {}})
     else:
         document = document[0]
-        tokens = json.loads( document['tokens'] )
-        tf = json.loads( document['tf'] )
-        tfLog = json.loads( document['tfLog'] )
-        tfDouble = json.loads( document['tfDouble'] )
-        words = archive.sort_dic( tokens )
+        tokens = json.loads(document['tokens'])
+        tf = json.loads(document['tf'])
+        tfLog = json.loads(document['tfLog'])
+        tfDouble = json.loads(document['tfDouble'])
+        words = archive.sort_dic(tokens)
         line = []
         var = 1
         for word in words:
-            line.append({'indice':var, 'word':word[0], 'frequency': word[1], 'tf': round(tf[word[0]], 2), 'tfLog': round(tfLog[word[0]], 2), 'tfDouble': round(tfDouble[word[0]], 2) } )
-            var+=1
+            line.append({'indice': var, 'word': word[0], 'frequency': word[1],
+                         'tf': round(tf[word[0]], 2), 'tfLog': round(tfLog[word[0]], 2),
+                         'tfDouble': round(tfDouble[word[0]], 2)})
+            var += 1
         # print(words)
-        return render(request, 'my_app/show_document.html', { 'words': line })
+        return render(request, 'my_app/show_document.html', {'words': line})
+
 
 @csrf_exempt
 def getglobal(request):
@@ -81,41 +87,39 @@ def getglobal(request):
     print('Get Global', name)
     values = Global.objects.values().distinct()[0]
     qtDocument = len(Documents.objects.values('name').distinct())
-    qtWords = ( values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'] )
+    qtWords = (values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'])
     info = []
-    if ( qtDocument != 0 ):
-        info.append({ 'qtWords': values['qtTokens'],\
-            'qtStopwords': values['qtStopwords'],\
-            'qtAdverbios': values['qtAdverbios'],\
-            'qtTokens': qtWords,\
-            'qtWordsP': 100,\
-            'qtStopwordsP': iround( (values['qtStopwords']/values['qtTokens'])*100),\
-            'qtAdverbiosP': iround( (values['qtAdverbios']/values['qtTokens'])*100),\
-            'qtTokensP': iround( (qtWords/values['qtTokens'])*100),\
-            'qtDocument': qtDocument })
+    if (qtDocument != 0):
+        info.append(
+            {'qtWords': values['qtTokens'],
+             'qtStopwords': values['qtStopwords'],
+             'qtAdverbios': values['qtAdverbios'],
+             'qtTokens': qtWords,
+             'qtWordsP': 100,
+             'qtStopwordsP': iround((values['qtStopwords']/values['qtTokens'])*100),
+             'qtAdverbiosP': iround((values['qtAdverbios']/values['qtTokens'])*100),
+             'qtTokensP': iround((qtWords/values['qtTokens'])*100),
+             'qtDocument': qtDocument})
     else:
-        info.append({ 'qtWords': 0,\
-            'qtStopwords': 0,\
-            'qtAdverbios': 0,\
-            'qtTokens': 0,\
-            'qtWordsP': 0,\
-            'qtStopwordsP': 0,\
-            'qtAdverbiosP': 0,\
-            'qtTokensP': 0,\
-            'qtDocument': 0 })
+        info.append({'qtWords': 0, 'qtStopwords': 0, 'qtAdverbios': 0,
+                     'qtTokens': 0, 'qtWordsP': 0, 'qtStopwordsP': 0,
+                     'qtAdverbiosP': 0, 'qtTokensP': 0, 'qtDocument': 0})
 
     print('info', info)
-    print(render(request, 'my_app/show_global.html', { 'info': info }))
-    return render(request, 'my_app/show_global.html', { 'info': info })
+    print(render(request, 'my_app/show_global.html', {'info': info}))
+    return render(request, 'my_app/show_global.html', {'info': info})
+
 
 @csrf_exempt
 def updateall(request):
     update_global_all()
     documents = Documents.objects.values('name').distinct()
-    return render(request, 'my_app/home.html', { 'documents': documents })
+    return render(request, 'my_app/home.html', {'documents': documents})
 
-def roundd(val,digits):
-   return round(val+10**(-len(str(val))-1), digits)
+
+def roundd(val, digits):
+    return round(val+10**(-len(str(val))-1), digits)
+
 
 def iround(x):
     """iround(number) -> integer

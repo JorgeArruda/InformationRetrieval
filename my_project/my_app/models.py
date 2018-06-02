@@ -125,7 +125,7 @@ class Documents(models.Model):
     tfLog = models.TextField(db_column='logNormalization', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     tfDouble = models.TextField(db_column='doubleNormalization', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     max = models.IntegerField(blank=True, null=True)
-    
+
     class Meta:
         managed = False
         db_table = 'documents'
@@ -144,14 +144,13 @@ class Global(models.Model):
         db_table = 'global'
 
 
-
 class Package(models.Model):
     idpackages = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True, default="", null=False)
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         managed = False
         db_table = 'packages'
