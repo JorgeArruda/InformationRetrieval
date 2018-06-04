@@ -87,13 +87,13 @@ def getglobal(request):
     print('Get Global', name)
     values = Global.objects.values().distinct()[0]
     qtDocument = len(Documents.objects.values('name').distinct())
-    list_documents = Documents.objects.values('name','qtStopwords', 'qtStopwordsTotal', 'qtAdverbios', 'qtAdverbiosTotal', 'qtToken', 'qtTokenTotal').distinct()
+    list_documents = Documents.objects.values('name', 'qtStopwords', 'qtStopwordsTotal', 'qtAdverbios', 'qtAdverbiosTotal', 'qtToken', 'qtTokenTotal').distinct()
     qtWords = (values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'])
 
     documents_dict = []
     for item in list_documents:
         qtTokens = item['qtTokenTotal']-item['qtStopwordsTotal']-item['qtAdverbiosTotal']
-        documents_dict.append(            
+        documents_dict.append(
             {'name': item['name'],
              'qtWords': item['qtTokenTotal'],
              'qtStopwords': item['qtStopwordsTotal'],
@@ -124,14 +124,14 @@ def getglobal(request):
                      'qtTokens': 0, 'qtWordsP': 0, 'qtStopwordsP': 0,
                      'qtAdverbiosP': 0, 'qtTokensP': 0, 'qtDocument': 0})
 
-    print('info', info)
+    # print('info', info)
     print(render(request, 'my_app/show_global.html', {'info': info}))
     return render(request, 'my_app/show_global.html', {'info': info})
 
 
 @csrf_exempt
 def getidf(request):
-    print('IDF')
+    print('Get IDF')
     name = request.POST['request']
     document = Global.objects.values('idf').distinct()[0]
 
@@ -139,14 +139,22 @@ def getidf(request):
         return render(request, 'my_app/show_document.html', {'words': {}})
     else:
         idff = json.loads(document['idf'])
-        words = archive.sort_dic(idff)
+        # words = archive.sort_dic(idff)
+        # line = []
+        # var = 1
+        # for word in words:
+        #     line.append({'indice': var, 'word': word[0], 'frequency': word[1]})
+        #     var += 1
+
+        words = sorted(idff)
         line = []
         var = 1
         for word in words:
-            line.append({'indice': var, 'word': word[0], 'frequency': word[1]})
+            line.append({'indice': var, 'word': word, 'frequency': idff[word]})
             var += 1
         # print(words)
         return render(request, 'my_app/show_idf.html', {'words': line})
+
 
 @csrf_exempt
 def updateall(request):

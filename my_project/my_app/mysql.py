@@ -107,7 +107,7 @@ def update_global_all():
     documents = Documents.objects.values('name').distinct()
 
     Global(id=1, words=json.dumps({}, ensure_ascii=False),
-           tStopwords=0, qtAdverbios=0, qtTokens=0,
+           qtStopwords=0, qtAdverbios=0, qtTokens=0,
            qtDocument=json.dumps({}, ensure_ascii=False),
            idf=json.dumps({}, ensure_ascii=False)).save()
     for doc in documents:

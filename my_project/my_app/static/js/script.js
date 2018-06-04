@@ -70,7 +70,7 @@ function showDocuments() {
             }
 
             myNode.insertAdjacentHTML('afterend', xhr.responseText);
-            var table = document.getElementById("div-document-table");
+            var table = document.getElementById("div-tables");
             table.parentNode.removeChild(table);
             myNode.appendChild(table);
         }
