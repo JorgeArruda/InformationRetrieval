@@ -1,0 +1,20 @@
+<div id="div-document-table" style="margin: 10px; width: 100%; height: 100%;">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Word</th>
+                <th scope="col">IDF</th>
+            </tr>
+        </thead>
+        <thead>
+            {% for token in words %}
+                <tr>
+                    <td scope="row">{{ token.indice }}</td>
+                    <td> {{ token.word }} </td>
+                    <td> {{ token.frequency }} </td>
+                </tr>
+            {% endfor %}
+        </thead>
+    </table>
+</div>

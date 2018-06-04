@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'sendfile$', views.upload_drive, name='upload_drive'),
     url(r'getdocument$', views.getdocument, name='getdocument'),
     url(r'getglobal$', views.getglobal, name='getglobal'),
+    url(r'getidf$', views.getidf, name='idf'),
     url(r'updateall$', views.updateall, name='updateall'),
 ]

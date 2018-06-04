@@ -87,7 +87,25 @@ def getglobal(request):
     print('Get Global', name)
     values = Global.objects.values().distinct()[0]
     qtDocument = len(Documents.objects.values('name').distinct())
+    list_documents = Documents.objects.values('name','qtStopwords', 'qtStopwordsTotal', 'qtAdverbios', 'qtAdverbiosTotal', 'qtToken', 'qtTokenTotal').distinct()
     qtWords = (values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'])
+
+    documents_dict = []
+    for item in list_documents:
+        qtTokens = item['qtTokenTotal']-item['qtStopwordsTotal']-item['qtAdverbiosTotal']
+        documents_dict.append(            
+            {'name': item['name'],
+             'qtWords': item['qtTokenTotal'],
+             'qtStopwords': item['qtStopwordsTotal'],
+             'qtAdverbios': item['qtAdverbiosTotal'],
+             'qtTokens': qtTokens,
+             'qtWordsP': 100,
+             'qtStopwordsP': iround((item['qtStopwordsTotal']/item['qtTokenTotal'])*100),
+             'qtAdverbiosP': iround((item['qtAdverbiosTotal']/item['qtTokenTotal'])*100),
+             'qtTokensP': iround((qtTokens/item['qtTokenTotal'])*100),
+             'qtDocument': qtDocument,
+             'documents': list_documents})
+
     info = []
     if (qtDocument != 0):
         info.append(
@@ -99,7 +117,8 @@ def getglobal(request):
              'qtStopwordsP': iround((values['qtStopwords']/values['qtTokens'])*100),
              'qtAdverbiosP': iround((values['qtAdverbios']/values['qtTokens'])*100),
              'qtTokensP': iround((qtWords/values['qtTokens'])*100),
-             'qtDocument': qtDocument})
+             'qtDocument': qtDocument,
+             'documents': documents_dict})
     else:
         info.append({'qtWords': 0, 'qtStopwords': 0, 'qtAdverbios': 0,
                      'qtTokens': 0, 'qtWordsP': 0, 'qtStopwordsP': 0,
@@ -109,6 +128,25 @@ def getglobal(request):
     print(render(request, 'my_app/show_global.html', {'info': info}))
     return render(request, 'my_app/show_global.html', {'info': info})
 
+
+@csrf_exempt
+def getidf(request):
+    print('IDF')
+    name = request.POST['request']
+    document = Global.objects.values('idf').distinct()[0]
+
+    if len(document) == 0:
+        return render(request, 'my_app/show_document.html', {'words': {}})
+    else:
+        idff = json.loads(document['idf'])
+        words = archive.sort_dic(idff)
+        line = []
+        var = 1
+        for word in words:
+            line.append({'indice': var, 'word': word[0], 'frequency': word[1]})
+            var += 1
+        # print(words)
+        return render(request, 'my_app/show_idf.html', {'words': line})
 
 @csrf_exempt
 def updateall(request):

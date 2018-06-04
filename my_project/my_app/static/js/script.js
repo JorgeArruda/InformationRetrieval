@@ -64,13 +64,13 @@ function showDocuments() {
             console.log('oi\n', xhr.response);
             var parser = new DOMParser();
 
-            var myNode = document.getElementById("div_show")
+            var myNode = document.getElementById("div_show");
             while (myNode.firstChild) {
                 myNode.removeChild(myNode.firstChild);
             }
 
             myNode.insertAdjacentHTML('afterend', xhr.responseText);
-            var table = document.getElementById("div-tables");
+            var table = document.getElementById("div-document-table");
             table.parentNode.removeChild(table);
             myNode.appendChild(table);
         }
@@ -78,6 +78,32 @@ function showDocuments() {
     xhr.open('post', 'getglobal', true);
     var fd = new FormData();
     fd.append('request', 'showDocuments');
+    xhr.send(fd);
+}
+
+function showIdf() {
+    console.log('Show idf request: ');
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        console.log('Ei\n', xhr.status);
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log('oi\n', xhr.response);
+            var parser = new DOMParser();
+
+            var myNode = document.getElementById("div_show");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            myNode.insertAdjacentHTML('afterend', xhr.responseText);
+            var table = document.getElementById("div-document-table");
+            table.parentNode.removeChild(table);
+            myNode.appendChild(table);
+        }
+    };
+    xhr.open('post', 'getidf', true);
+    var fd = new FormData();
+    fd.append('request', 'showIdf');
     xhr.send(fd);
 }
 

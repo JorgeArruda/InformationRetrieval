@@ -23,38 +23,21 @@
                         <td> {{ var.qtDocument }} </td>
                     </tr>
                 </thead>
+                {% for doc in var.documents %}
+                    <thead>
+                        <tr>
+                            <td scope="row"> {{ doc.name }} </td>
+                            <!-- <td> {{ var.qtWords }} - {{ var.qtWordsP }}% </td> -->
+                            <td> {{ doc.qtWords }} </td>
+                            <td> {{ doc.qtStopwords }} - {{ doc.qtStopwordsP }}% </td>
+                            <td> {{ doc.qtAdverbios }} - {{ doc.qtAdverbiosP }}% </td>
+                            <td> {{ doc.qtTokens }} - {{ doc.qtTokensP }}% </td>
+                            <td> - </td>
+                        </tr>
+                    </thead>
+                {% endfor %}
             </table>
         </div>
-        <!-- <div id="div-document-table" style="margin: 10px; width: 100%; height: 100%;">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Qt. Words</th>
-                        <th scope="col">Qt. Stopwords</th>
-                        <th scope="col">Qt. Adverbios</th>
-                        <th scope="col">Qt. Tokens</th>
-                    </tr>
-                </thead>
-                <thead>
-                    <tr>
-                        <td scope="row">1</td>
-                        <td> exe.doc </td>
-                        <td> 50% </td>
-                        <td> 25% </td>
-                        <td> 100% </td>
-                        <td> 25% </td>
-                    </tr>
-                    {% for token in words %}
-                        <tr>
-                            <td scope="row">{{ token.indice }}</td>
-                            <td> {{ token.document }} </td>
-                            <td> {{ token.frequency }} </td>
-                        </tr>
-                    {% endfor %}
-                </thead>
-            </table>
-        </div> -->
+        
     </div>
 {% endfor %}

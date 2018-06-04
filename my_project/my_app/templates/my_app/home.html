@@ -21,6 +21,7 @@
                     <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
                 </form>
                 <button onclick="showDocuments()">Dados da coleção</button>
+                <button onclick="showIdf()">IDF</button>
                 <form class="form-signin" method="POST">
                     {% csrf_token %}
                     <button onclick="updateAll()">Atualizar dados</button>
