@@ -93,18 +93,32 @@ def getglobal(request):
     documents_dict = []
     for item in list_documents:
         qtTokens = item['qtTokenTotal']-item['qtStopwordsTotal']-item['qtAdverbiosTotal']
-        documents_dict.append(
-            {'name': item['name'],
-             'qtWords': item['qtTokenTotal'],
-             'qtStopwords': item['qtStopwordsTotal'],
-             'qtAdverbios': item['qtAdverbiosTotal'],
-             'qtTokens': qtTokens,
-             'qtWordsP': 100,
-             'qtStopwordsP': iround((item['qtStopwordsTotal']/item['qtTokenTotal'])*100),
-             'qtAdverbiosP': iround((item['qtAdverbiosTotal']/item['qtTokenTotal'])*100),
-             'qtTokensP': iround((qtTokens/item['qtTokenTotal'])*100),
-             'qtDocument': qtDocument,
-             'documents': list_documents})
+        if item['qtTokenTotal'] != 0:
+            documents_dict.append(
+                {'name': item['name'],
+                 'qtWords': item['qtTokenTotal'],
+                 'qtStopwords': item['qtStopwordsTotal'],
+                 'qtAdverbios': item['qtAdverbiosTotal'],
+                 'qtTokens': qtTokens,
+                 'qtWordsP': 100,
+                 'qtStopwordsP': iround((item['qtStopwordsTotal']/item['qtTokenTotal'])*100),
+                 'qtAdverbiosP': iround((item['qtAdverbiosTotal']/item['qtTokenTotal'])*100),
+                 'qtTokensP': iround((qtTokens/item['qtTokenTotal'])*100),
+                 'qtDocument': qtDocument,
+                 'documents': list_documents})
+        else:
+            documents_dict.append(
+                {'name': item['name'],
+                 'qtWords': item['qtTokenTotal'],
+                 'qtStopwords': item['qtStopwordsTotal'],
+                 'qtAdverbios': item['qtAdverbiosTotal'],
+                 'qtTokens': qtTokens,
+                 'qtWordsP': 100,
+                 'qtStopwordsP': 0,
+                 'qtAdverbiosP': 0,
+                 'qtTokensP': 0,
+                 'qtDocument': qtDocument,
+                 'documents': list_documents})
 
     info = []
     if (qtDocument != 0):
@@ -161,6 +175,10 @@ def updateall(request):
     update_global_all()
     documents = Documents.objects.values('name').distinct()
     return render(request, 'my_app/home.html', {'documents': documents})
+
+
+def documents(request):
+    return render(request, 'my_app/documents.html', {'title': 'Documentos'})
 
 
 def roundd(val, digits):

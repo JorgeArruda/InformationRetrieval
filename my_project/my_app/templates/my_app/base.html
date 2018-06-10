@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%;">
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    <meta charset="utf-8">
+    <title>Simple File Upload</title>
+</head>
+
+<body>
+    <div style="width: 100%; height: 100%; position: fixed;">
+        <div style="padding: 15px; width: 100%; height: 25%; background-color: cadetblue;">
+            <div class="form-group">
+                <form class="form-signin" method="POST">
+                    {% csrf_token %}
+                    <label for="inputFile">Upload file</label>
+                    <input type="file" class="form-control-file" id="inputFile" onchange="handleFiles(event)">
+                </form>
+                <button onclick="showDocuments()">Dados da coleção</button>
+                <button onclick="showIdf()">IDF</button>
+                <form class="form-signin" method="POST">
+                    {% csrf_token %}
+                    <button onclick="updateAll()">Atualizar dados</button>
+                </form>
+            </div>
+        </div>
+
+        <div style="width: 100%; height: 75%; display: inline-flex; align-items: center; position: relative;">
+            <div style="width: 30%; height: 100%; display: inline; position: relative;">
+                {% block container_left %}{% endblock container_left %}
+            </div>
+            <div id="div_show" style="width: 70%; height: 100%; display: inline; position: relative; background-color: white; overflow: hidden; overflow-y: scroll;">
+                {% block container_right %}{% endblock container_right %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
