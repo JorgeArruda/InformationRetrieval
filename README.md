@@ -7,5 +7,6 @@
 pip3 install -r requirements.txt
 
 # Configure mysql user
+create database ri_vetorial
 create user 'ri_vetorial'@'localhost' identified by '14411441';
 grant all privileges on ri_vetorial.* to 'ri_vetorial'@'localhost';
