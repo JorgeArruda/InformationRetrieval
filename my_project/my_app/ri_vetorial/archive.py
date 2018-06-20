@@ -4,9 +4,14 @@ import json
 from operator import itemgetter
 import math
 
-import my_app.ri_vetorial.lex as lex
-from .stopwords import Stop
-from .read import Read
+try:
+    import my_app.ri_vetorial.lex as lex
+    from .stopwords import Stop
+    from .read import Read
+except ImportError:
+    import lex as lex
+    from stopwords import Stop
+    from read import Read
 
 
 def sort_dic(dic, indice=0):
@@ -113,7 +118,8 @@ def get_tfLog(frequency):
         print('\n---Lista de tokens vazia!', frequency)
     tfLog = {}
     for key in frequency:
-        tfLog[key] = math.log(1 + frequency[key])
+        # tfLog[key] = math.log(1 + frequency[key])
+        tfLog[key] = (1.0 + math.log(frequency[key], 2))
     return tfLog
 
 
