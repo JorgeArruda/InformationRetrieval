@@ -12,7 +12,7 @@ import json
 import math
 import numpy as np
 
-import my_app.ri_vetorial.archive as archive
+import my_app.ri_vetorial.tokens.archive as archive
 from .mysql import update_global_all, update_global_idf, update_global_insert, update_global_remove, insert_document, remove_document
 
 # Create your views here.

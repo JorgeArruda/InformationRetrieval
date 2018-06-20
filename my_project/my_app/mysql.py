@@ -5,7 +5,7 @@ from .models import Global
 
 import json
 
-import my_app.ri_vetorial.archive as archive
+import my_app.ri_vetorial.tokens.archive as archive
 
 
 def update_global_idf():

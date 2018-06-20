@@ -1,31 +1,66 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 try:
-    from .term import TermoColecao
+    from .termo import TermoColecao, Termo
+    from .documento import Documento
 except ImportError:
-    from term import TermoColecao
+    from termo import TermoColecao, Termo
+    from documento import Documento
+
 
 class Colecao(object):
     def __init__(self):
-        self.qtdDocumentos = 0
-        self.qtdTermos = 0
+        self.qtDocumentos = 0
+        self.qtTermos = 0
         self.listTermosColecao = []
+        self.listDocuments = []
+
+        self.qtWord = 0
+        self.qtStopword = 0
+        self.qtAdverbio = 0
 
     def incQtdDocumentos(self):
-        self.qtdDocumentos += 1
+        self.qtDocumentos += 1
 
     def incQtdTermos(self):
-        self.qtdTermos += 1
+        self.qtTermos += 1
 
     def addTermo(self, termo, idf):
-        posicao = self.pesquisar(termo.word)
+        posicao = self.pesquisarWord(termo.word)
         if posicao == -1:
             self.listTermosColecao.append(TermoColecao(termo.word, idf))
             self.incQtdTermos()
         else:
             self.listTermosColecao[posicao].idf = idf
 
-    def pesquisar(self, word):
+    def addDocumento(self, nome, text):
+        posicao = self.pesquisarDocumento(nome)
+        if posicao == -1:
+            doc = Documento()
+            doc.nome = nome
+            doc.text = text
+            doc.remove_stopwords()
+            # RawFrequency, DoubleNormalization, LogNormalization
+            # InverseFrequency
+            # TFIDF
+            doc.processar(self, self.listDocuments,
+                          'RawFrequency',
+                          'InverseFrequency',
+                          'TFIDF')
+
+            self.listDocuments.append(doc)
+            self.incQtdDocumentos()
+        else:
+            print('O documento %s já está na coleção' % (nome))
+            return -1
+
+    def pesquisarWord(self, word):
         if word in self.listTermosColecao:
             return self.listTermosColecao.index(word)
+        return -1
+
+    def pesquisarDocumento(self, nome):
+        for doc in self.listDocuments:
+            if nome == doc.nome:
+                return self.listDocuments.index(doc)
         return -1

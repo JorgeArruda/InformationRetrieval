@@ -5,7 +5,7 @@ from operator import itemgetter
 import math
 
 try:
-    import my_app.ri_vetorial.lex as lex
+    from .lex import tokenize
     from .stopwords import Stop
     from .read import Read
 except ImportError:
@@ -42,7 +42,7 @@ def get_text(name, path='/'):
 def get_tokens(text, language='portuguese'):
     if type(text) != str:
         return "Erro, argument text != string"
-    return lex.tokenize(text, language)
+    return tokenize(text, language)
 
 
 def remove_stopwords(tokens):
