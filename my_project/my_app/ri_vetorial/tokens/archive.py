@@ -7,11 +7,13 @@ import math
 try:
     from .lex import tokenize
     from .stopwords import Stop
-    from .read import Read
+    # from .read import Read
+    from .files import Read
 except ImportError:
     from lex import tokenize
     from stopwords import Stop
-    from read import Read
+    # from read import Read
+    from files import Read
 
 
 def sort_dic(dic, indice=0):
@@ -19,21 +21,22 @@ def sort_dic(dic, indice=0):
 
 
 def get_text(name, path='/'):
-    read = Read()
+    # read = Read()
     if type(path) != str:
         return "Erro, argument path != string"
-    archive_type = name.split(".")[-1]
+    # archive_type = name.split(".")[-1]
     try:
-        if (archive_type == "html"):
-            return read.html(path+name)
-        elif (archive_type == "pdf"):
-            return read.pdf(path+name)
-        elif (archive_type == "docx"):
-            return read.docx(path+name)
-        elif ((archive_type == "jpg") | (archive_type == "png")):
-            return read.image(path+name)
-        else:
-            return ' '
+        # if (archive_type == "html"):
+        #     return read.html(path+name)
+        # elif (archive_type == "pdf"):
+        #     return read.pdf(path+name)
+        # elif (archive_type == "docx"):
+        #     return read.docx(path+name)
+        # elif ((archive_type == "jpg") | (archive_type == "png")):
+        #     return read.image(path+name)
+        # else:
+
+        return Read(name, path).text
     except FileNotFoundError:
         print("No such file or directory: ", path+name)
         return ' '

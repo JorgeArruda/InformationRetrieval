@@ -4,7 +4,7 @@ import os
 
 from docx import Document   # Read docx
 import pdftotext    # Read pdf
-from tika import parser
+# from tika import parser
 from bs4 import BeautifulSoup   # Read html
 import codecs   # Read html
 from PIL import Image   # Importando o módulo para abrir a imagem no script
@@ -28,6 +28,7 @@ class Read(object):
                 self.text = self.image(path+name)
         except FileNotFoundError:
             print("No such file or directory: ", path+name)
+        print('..........', self.text)
 
     def html(self, name):
         if type(name) != str:

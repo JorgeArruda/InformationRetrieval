@@ -24,11 +24,8 @@ class InverseFrequency(AbstractIDF):
     def __init__(self):
         pass
 
-    def calcPeso(self, termo, listaDocumentos):
-        qtDocumentosTermo = self.getQtDocumentosTermo(termo.word, listaDocumentos)
-        qtDoc = len(listaDocumentos)
-
-        return math.log2(qtDoc / qtDocumentosTermo)
+    def calcPeso(self, qtDoc, qtDocTermo):
+        return math.log2(qtDoc / qtDocTermo)
 
 
 class InverseFrequencySmooth(object):

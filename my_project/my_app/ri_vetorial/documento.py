@@ -30,6 +30,7 @@ class Documento(object):
         self.listTermosProcessados = []
         self.listaTermos = []
         self.tokens = {}
+        self.tf = {}
 
     def get_tokens(self, language='portuguese'):
         return tokenize(self.text, language)
@@ -48,21 +49,30 @@ class Documento(object):
         self.tokens = result['tokens']
         self.listaTermos = sorted(list(self.tokens.keys()))
 
-    def processar(self, colecao, listaDocumentos, strategyTF, strategyIDF, strategyTFIDF='TFIDF'):
-        strategyTF = self.instanciar(tf_class, strategyTF)
-        strategyIDF = self.instanciar(idf_class, strategyIDF)
-        strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
+    def processar(self, colecao, strategyTF):
+        strategyTF = self.instanciar(tf_class, colecao.algoritmo['tf'])
+        # strategyIDF = self.instanciar(idf_class, strategyIDF)
+        # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
 
         for word in self.tokens:
-            termo = Termo()
+            # termo = Termo()
             self.word = word
             self.frequency = self.tokens[word]
-            termo.tf = strategyTF.calcularPeso(termo, self)
-            termo.idf = idf = strategyIDF.calcularPeso(termo, listaDocumentos)
-            termo.tfIdf = termo.tf * termo.idf
+            # termo.tf = strategyTF.calcularPeso(termo, self)
+            # termo.idf = idf = strategyIDF.calcularPeso(termo, listaDocumentos)
+            # termo.tfIdf = termo.tf * termo.idf
 
-            colecao.addTermo(termo, idf)
-            self.listTermosProcessados.append(termo)
+            self.tf[word] = strategyTF.calcularPeso(word, self)
+
+            if (word in colecao.qtTermoDocumento):
+                colecao.qtTermoDocumento[word] += 1
+            else:
+                colecao.qtTermoDocumento[word] = 1
+
+            if not (word in colecao.listTermosColecao):
+                colecao.listTermosColecao.append(word)
+
+            # self.listTermosProcessados.append(termo)
 
     def instanciar(self, origem, strategy):
         try:

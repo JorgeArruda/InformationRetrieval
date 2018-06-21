@@ -3,7 +3,7 @@
 from .models import Documents
 from .models import Global
 from .ri_vetorial.tokens import archive as archive
-
+from .colecao_to_bd import Connection
 import json
 
 
@@ -13,15 +13,12 @@ class Database(object):
 
     def update_global_idf(self):
         "Atualiza o idf da coleção"
+        colecao = Connection().startColecao()
 
-        qt_document = json.loads(Global.objects.values('qtDocument').distinct()[0]['qtDocument'])
-        qt_total = len(Documents.objects.values('name').distinct())
-        colecao = Global.objects.values().distinct()[0]
-
-        colecao['idf'] = json.dumps(archive.get_idf(qt_document, qt_total), ensure_ascii=False)
+        idf = json.dumps(colecao.updateIdf(), ensure_ascii=False)
 
         document_edit = Global.objects.get(id=colecao['id'])  # object to update
-        document_edit.idf = colecao['idf']  # update idf
+        document_edit.idf = idf  # update idf
         document_edit.save()  # save object
 
         return True
@@ -129,6 +126,9 @@ class Database(object):
         return True
 
     def insert_document(self, filename, texto):
+        colecao = Connection().startColecao()
+        doc = colecao.addDocumento(filename, texto)
+        doc.processar(colecao, colecao)
         # Calcula a frequencia de palavras no documento
         token = archive.get_frequency(archive.get_tokens(texto))
         # print("TOKENS ",token)
@@ -143,16 +143,16 @@ class Database(object):
         # Salva o novo documento no db
         Documents(
             name=filename, text=texto,
-            tokens=json.dumps(token['tokens'], ensure_ascii=False),
+            tokens=json.dumps(doc.tokens, ensure_ascii=False),
             tf=json.dumps(tf_adjusted, ensure_ascii=False),
             tfLog=json.dumps(tf_log, ensure_ascii=False),
             tfDouble=json.dumps(tf_double, ensure_ascii=False),
-            qtStopwords=token['qt_stopwords'],
-            qtStopwordsTotal=token['qt_stopwords_total'],
-            qtAdverbios=token['qt_adverbios'],
-            qtAdverbiosTotal=token['qt_adverbios_total'],
-            qtToken=token['qt_tok'], qtTokenTotal=token['qt_tok_total'],
-            max=token['max']).save()
+            qtStopwords=doc.qtStopword,
+            qtStopwordsTotal=doc.qtStopwordTotal,
+            qtAdverbios=doc.qtAdverbio,
+            qtAdverbiosTotal=doc.qtAdverbioTotal,
+            qtToken=doc.qtWord, qtTokenTotal=doc.qtWordTotal,
+            max=doc.termoMaiorFrequencia).save()
 
         # # Salva a frequencia global atualizada
         self.update_global_insert(filename)

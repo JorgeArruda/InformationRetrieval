@@ -2,41 +2,30 @@
 # -*- coding: utf-8 -*-
 try:
     from .termo import TermoColecao, Termo
+    from .frequency import inverse_frequency as idf_class
     from .documento import Documento
 except ImportError:
     from termo import TermoColecao, Termo
     from documento import Documento
+import math
 
 
 class Colecao(object):
     def __init__(self):
         self.qtDocumentos = 0
-        self.qtTermos = 0
         self.listTermosColecao = []
         self.listDocuments = []
         self.tokens = {}
+        self.idf = {}
 
         self.qtWord = 0
         self.qtStopword = 0
         self.qtAdverbio = 0
 
+        self.qtTermoDocumento = {}
         self.algoritmo = {'tf': 'RawFrequency',  # RawFrequency, DoubleNormalization, LogNormalization
                           'idf': 'InverseFrequency',  # InverseFrequency
                           'tfidf': 'TFIDF'}  # TFIDF
-
-    def incQtdDocumentos(self):
-        self.qtDocumentos += 1
-
-    def incQtdTermos(self):
-        self.qtTermos += 1
-
-    def addTermo(self, termo, idf):
-        posicao = self.pesquisarWord(termo.word)
-        if posicao == -1:
-            self.listTermosColecao.append(TermoColecao(termo.word, idf))
-            self.incQtdTermos()
-        else:
-            self.listTermosColecao[posicao].idf = idf
 
     def addDocumento(self, nome, text):
         posicao = self.pesquisarDocumento(nome)
@@ -51,7 +40,8 @@ class Colecao(object):
                           self.algoritmo['tfidf'])
 
             self.listDocuments.append(doc)
-            self.incQtdDocumentos()
+            self.qtDocumentos += 1
+            return doc
         else:
             print('O documento %s já está na coleção' % (nome))
             return -1
@@ -66,3 +56,16 @@ class Colecao(object):
             if nome == doc.nome:
                 return self.listDocuments.index(doc)
         return -1
+
+    def updateIdf(self):
+        strategyIDF = self.instanciar(idf_class, self.algoritmo['idf'])
+        self.idf = {}
+        for key in self.qtTermoDocumento:
+            self.idf[key] = strategyIDF.calcPeso(self.qtDocumentos, self.qtTermoDocumento[key])
+        return self.idf
+
+    def instanciar(self, origem, nome):
+        try:
+            return getattr(origem, nome)()
+        except AttributeError:
+            print('Error, a classe %s não existe' % (nome))
