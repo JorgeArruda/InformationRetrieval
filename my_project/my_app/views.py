@@ -74,9 +74,14 @@ def getdocument(request):
         var = 1
         for word in words:
             line.append({'indice': var, 'word': word[0], 'frequency': word[1],
-                         'tf': round(tf[word[0]], 2), 'tfLog': round(tfLog[word[0]], 2),
-                         'tfDouble': round(tfDouble[word[0]], 2)})
+                         'tf': round(tf[word[0]], 2), 'tfLog': '-',
+                         'tfDouble': '-'})
             var += 1
+        # for word in words:
+        #     line.append({'indice': var, 'word': word[0], 'frequency': word[1],
+        #                  'tf': iround(tf[word[0]]), 'tfLog': iround(tfLog[word[0]]),
+        #                  'tfDouble': iround(tfDouble[word[0]])})
+        #     var += 1
         # print(words)
         return render(request, 'my_app/show_document.html', {'words': line})
 

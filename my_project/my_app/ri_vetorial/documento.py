@@ -52,6 +52,7 @@ class Documento(object):
 
     def processar(self, colecao):
         strategyTF = self.instanciar(tf_class, colecao.algoritmo['tf'])
+        print('\nprocessar      ', strategyTF, '\n')
         # strategyIDF = self.instanciar(idf_class, strategyIDF)
         # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
         print(self.tokens)

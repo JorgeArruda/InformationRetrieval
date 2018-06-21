@@ -35,7 +35,7 @@ class Connection(object):
         colecao.qtAdverbio = colecao_bd['qtAdverbios']
 
         colecao.algoritmo = {
-            'tf': 'RawFrequency',  # RawFrequency, DoubleNormalization, LogNormalization
+            'tf': 'DoubleNormalization',  # RawFrequency, DoubleNormalization, LogNormalization
             'idf': 'InverseFrequency',  # InverseFrequency
             'tfidf': 'TFIDF'}  # TFIDF
 
