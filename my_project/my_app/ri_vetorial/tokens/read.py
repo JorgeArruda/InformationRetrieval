@@ -3,7 +3,8 @@
 import os
 
 from docx import Document   # Read docx
-import pdftotext    # Read pdf
+# import pdftotext    # Read pdf
+from tika import parser
 from bs4 import BeautifulSoup   # Read html
 import codecs   # Read html
 from PIL import Image   # Importando o módulo para abrir a imagem no script
@@ -19,10 +20,14 @@ class Read(object):
     def pdf(self, name):
         if type(name) != str:
             return "Erro, argument name != string"
-        pdf = pdftotext.PDF(open(name, "rb"))
-        full_text = ''
-        for page in pdf:
-            full_text = full_text+page
+        # pdf = pdftotext.PDF(open(name, "rb"))
+        # full_text = ''
+        # for page in pdf:
+        #     full_text = full_text+page
+
+        pdf = parser.from_file(name)
+        full_text = pdf['content']
+
         return full_text
 
     def docx(self, name):

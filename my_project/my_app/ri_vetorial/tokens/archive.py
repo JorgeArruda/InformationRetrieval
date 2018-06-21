@@ -9,7 +9,7 @@ try:
     from .stopwords import Stop
     from .read import Read
 except ImportError:
-    import lex as lex
+    from lex import tokenize
     from stopwords import Stop
     from read import Read
 
