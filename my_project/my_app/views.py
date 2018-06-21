@@ -13,8 +13,8 @@ import math
 import numpy as np
 
 import my_app.ri_vetorial.tokens.archive as archive
-from .mysql import update_global_all, update_global_idf, update_global_insert, update_global_remove, insert_document, remove_document
-
+# from .mysql import update_global_all, update_global_idf, update_global_insert, update_global_remove, insert_document, remove_document
+from .database import DB
 # Create your views here.
 
 
@@ -49,7 +49,7 @@ def upload_drive(request):
         # Analisa o arquivo em busca de textos
         text = archive.get_text(filename, target_folder+'/')
         # Salva o novo documento no db
-        insert_document(filename, text)
+        DB().insert_document(filename, text)
 
         return JsonResponse({"name": filename, "status": 'true'})
     else:
@@ -153,13 +153,6 @@ def getidf(request):
         return render(request, 'my_app/show_document.html', {'words': {}})
     else:
         idff = json.loads(document['idf'])
-        # words = archive.sort_dic(idff)
-        # line = []
-        # var = 1
-        # for word in words:
-        #     line.append({'indice': var, 'word': word[0], 'frequency': word[1]})
-        #     var += 1
-
         words = sorted(idff)
         line = []
         var = 1
@@ -172,7 +165,7 @@ def getidf(request):
 
 @csrf_exempt
 def updateall(request):
-    update_global_all()
+    DB().update_global_all()
     documents = Documents.objects.values('name').distinct()
     return render(request, 'my_app/home.html', {'documents': documents})
 

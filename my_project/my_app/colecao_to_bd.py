@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from .models import Documents
 from .models import Global
-from .mysql import update_global_all
+# from .database import DB
 
 from .ri_vetorial.colecao import Colecao
 from .ri_vetorial.tokens import archive as archive
@@ -24,11 +24,11 @@ class Connection(object):
         colecao.tokens = json.loads(colecao_bd['words'])
         colecao.listTermosColecao = sorted(list(colecao.tokens.keys()))
 
-        colecao.qtDocumentos = colecao_bd['qtDocument']
+        colecao.qtDocumentos = len(Documents.objects.values('name').distinct())
         colecao.qtTermos = len(colecao.listTermosColecao)
 
         if colecao.qtDocumentos != 0:
-            colecao.listDocuments = Documents.objects.values('name').distinct()[0]
+            colecao.listDocuments = list(Documents.objects.values('name').distinct()[0].values())
 
         colecao.qtWord = colecao_bd['qtTokens']
         colecao.qtStopword = colecao_bd['qtStopwords']
@@ -42,12 +42,12 @@ class Connection(object):
         return colecao
 
     def verificaQtDocumentos(self):
-        qtDocument = len(Documents.objects.values('name').distinct()[0])
-        qtDocumentBd = Global.objects.values('qtDocument').distinct()[0]
+        qtDocument = len(Documents.objects.values('name').distinct())
+        # qtDocumentBd = Global.objects.values('qtDocument').distinct()[0]['qtDocument']
 
-        if qtDocument < qtDocumentBd:
+        if qtDocument == 0:
             print('Atualizando BD, quantidade de documentos não corresponde...')
-            update_global_all()
+            # DB().update_global_all()
 
         return qtDocument
 

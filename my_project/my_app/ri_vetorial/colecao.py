@@ -30,14 +30,9 @@ class Colecao(object):
     def addDocumento(self, nome, text):
         posicao = self.pesquisarDocumento(nome)
         if posicao == -1:
-            doc = Documento()
-            doc.nome = nome
-            doc.text = text
+            doc = Documento(nome, text)
             doc.remove_stopwords()
-            doc.processar(self, self.listDocuments,
-                          self.algoritmo['tf'],
-                          self.algoritmo['idf'],
-                          self.algoritmo['tfidf'])
+            doc.processar(self)
 
             self.listDocuments.append(doc)
             self.qtDocumentos += 1
@@ -53,7 +48,7 @@ class Colecao(object):
 
     def pesquisarDocumento(self, nome):
         for doc in self.listDocuments:
-            if nome == doc.nome:
+            if nome == doc:
                 return self.listDocuments.index(doc)
         return -1
 

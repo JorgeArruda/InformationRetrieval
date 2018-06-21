@@ -52,9 +52,9 @@ def remove_stopwords(tokens):
     "Remove stopwords e verifica a quantidade removida. Return {'tokens', \
     qt_stopwords', 'qt_stopwords_total', 'qt_adverbios', 'qt_adverbios_total'}"
     if (type(tokens) != dict):
-        print('\n---Tokens não é uma lista!', tokens)
+        print('\n---(rs) Tokens não é uma lista!', tokens)
     if (len(tokens) == 0):
-        print('\n---Lista de tokens vazia!', tokens)
+        print('\n---(rs) Lista de tokens vazia!', tokens)
 
     qt_stopwords = qt_stopwords_total = 0
     qt_adverbios = qt_adverbios_total = 0
@@ -104,9 +104,9 @@ def get_frequency(listTokens):
 
 def get_tf(frequency, qtTokens):
     if (type(frequency) != dict):
-        print('\n---Tokens não é uma lista!', frequency)
+        print('\n(gt) ---Tokens não é uma lista!', frequency)
     if (len(frequency) == 0):
-        print('\n---Lista de tokens vazia!', frequency)
+        print('\n(gt) ---Lista de tokens vazia!', frequency)
     tf = {}
     if qtTokens != 0:
         for key in frequency:
@@ -116,9 +116,9 @@ def get_tf(frequency, qtTokens):
 
 def get_tfLog(frequency):
     if (type(frequency) != dict):
-        print('\n---Tokens não é uma lista!', frequency)
+        print('\n(log) ---Tokens não é uma lista!', frequency)
     if (len(frequency) == 0):
-        print('\n---Lista de tokens vazia!', frequency)
+        print('\n(log) ---Lista de tokens vazia!', frequency)
     tfLog = {}
     for key in frequency:
         # tfLog[key] = math.log(1 + frequency[key])
@@ -128,9 +128,9 @@ def get_tfLog(frequency):
 
 def get_tfDouble(frequency, qtMax):
     if (type(frequency) != dict):
-        print('\n---Tokens não é uma lista!', frequency)
+        print('\n(double) ---Tokens não é uma lista!', frequency)
     if (len(frequency) == 0):
-        print('\n---Lista de tokens vazia!', frequency)
+        print('\n(double) ---Lista de tokens vazia!', frequency)
     tfDouble = {}
     if qtMax != 0:
         for key in frequency:
@@ -140,9 +140,9 @@ def get_tfDouble(frequency, qtMax):
 
 def get_idf(fDocument, numDocument):
     if (type(fDocument) != dict):
-        print('\n---Tokens não é uma lista!', fDocument)
+        print('\n(idf) ---Tokens não é uma lista!', fDocument)
     if (len(fDocument) == 0):
-        print('\n---Lista de tokens vazia!', fDocument)
+        print('\n(idf) ---Lista de tokens vazia!', fDocument)
 
     idf_word = {}
     for key in fDocument:

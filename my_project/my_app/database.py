@@ -7,7 +7,7 @@ from .colecao_to_bd import Connection
 import json
 
 
-class Database(object):
+class DB(object):
     def __init__(self):
         pass
 
@@ -17,7 +17,8 @@ class Database(object):
 
         idf = json.dumps(colecao.updateIdf(), ensure_ascii=False)
 
-        document_edit = Global.objects.get(id=colecao['id'])  # object to update
+        id = Global.objects.values('id').distinct()[0]['id']
+        document_edit = Global.objects.get(id=id)  # object to update
         document_edit.idf = idf  # update idf
         document_edit.save()  # save object
 
@@ -128,18 +129,16 @@ class Database(object):
     def insert_document(self, filename, texto):
         colecao = Connection().startColecao()
         doc = colecao.addDocumento(filename, texto)
-        doc.processar(colecao, colecao)
+        doc.processar(colecao)
         # Calcula a frequencia de palavras no documento
-        token = archive.get_frequency(archive.get_tokens(texto))
-        # print("TOKENS ",token)
-
+        # token = archive.get_frequency(archive.get_tokens(texto))
         # Remove e conta as stopwords removidas
-        token = archive.remove_stopwords(token)
+        # token = archive.remove_stopwords(token)
         # Calcula a tf ajustada pelo tamanho do documento
-        tf_adjusted = archive.get_tf(token['tokens'], token['qt_tok_total'])
-        tf_log = archive.get_tfLog(token['tokens'])
-        tf_double = archive.get_tfDouble(token['tokens'], token['max'])
-
+        tf_adjusted = doc.tf
+        tf_log = {}  # archive.get_tfLog(token['tokens'])
+        tf_double = {}  # archive.get_tfDouble(token['tokens'], token['max'])
+        print('iii ', doc.tf)
         # Salva o novo documento no db
         Documents(
             name=filename, text=texto,

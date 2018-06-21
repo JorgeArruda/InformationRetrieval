@@ -6,18 +6,18 @@ try:
     from .frequency import tf_idf as tfidf_class
 
     from .tokens.lex import tokenize
-    from .tokens.archive import remove_stopwords
+    from .tokens.archive import remove_stopwords, get_frequency
     from .termo import TermoColecao, Termo
 except ImportError:
     from tokens.lex import tokenize
-    from tokens.archive import remove_stopwords
+    from tokens.archive import remove_stopwords, get_frequency
     from termo import TermoColecao, Termo
 
 
 class Documento(object):
-    def __init__(self):
-        self.nome = ''
-        self.text = ' '
+    def __init__(self, nome, texto):
+        self.nome = nome
+        self.text = texto
 
         self.qtWord = 0
         self.qtWordTotal = 0
@@ -36,7 +36,8 @@ class Documento(object):
         return tokenize(self.text, language)
 
     def remove_stopwords(self):
-        result = remove_stopwords(self.get_tokens())
+        result = remove_stopwords(get_frequency(self.get_tokens()))
+        print('result', result)
         self.qtWord = result['qt_tok'] - result['qt_stopwords'] - result['qt_adverbios']
         self.qtWordTotal = result['qt_tok_total'] - result['qt_stopwords'] - result['qt_stopwords_total']
         self.qtStopword = result['qt_stopwords']
@@ -49,20 +50,20 @@ class Documento(object):
         self.tokens = result['tokens']
         self.listaTermos = sorted(list(self.tokens.keys()))
 
-    def processar(self, colecao, strategyTF):
+    def processar(self, colecao):
         strategyTF = self.instanciar(tf_class, colecao.algoritmo['tf'])
         # strategyIDF = self.instanciar(idf_class, strategyIDF)
         # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
-
+        print(self.tokens)
         for word in self.tokens:
             # termo = Termo()
             self.word = word
-            self.frequency = self.tokens[word]
+            frequency = self.tokens[word]
             # termo.tf = strategyTF.calcularPeso(termo, self)
             # termo.idf = idf = strategyIDF.calcularPeso(termo, listaDocumentos)
             # termo.tfIdf = termo.tf * termo.idf
 
-            self.tf[word] = strategyTF.calcularPeso(word, self)
+            self.tf[word] = strategyTF.calcPeso(frequency, self)
 
             if (word in colecao.qtTermoDocumento):
                 colecao.qtTermoDocumento[word] += 1
@@ -73,6 +74,7 @@ class Documento(object):
                 colecao.listTermosColecao.append(word)
 
             # self.listTermosProcessados.append(termo)
+        print(self.tf)
 
     def instanciar(self, origem, strategy):
         try:
