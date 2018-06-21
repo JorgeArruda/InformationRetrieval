@@ -14,10 +14,15 @@ class Colecao(object):
         self.qtTermos = 0
         self.listTermosColecao = []
         self.listDocuments = []
+        self.tokens = {}
 
         self.qtWord = 0
         self.qtStopword = 0
         self.qtAdverbio = 0
+
+        self.algoritmo = {'tf': 'RawFrequency',  # RawFrequency, DoubleNormalization, LogNormalization
+                          'idf': 'InverseFrequency',  # InverseFrequency
+                          'tfidf': 'TFIDF'}  # TFIDF
 
     def incQtdDocumentos(self):
         self.qtDocumentos += 1
@@ -40,13 +45,10 @@ class Colecao(object):
             doc.nome = nome
             doc.text = text
             doc.remove_stopwords()
-            # RawFrequency, DoubleNormalization, LogNormalization
-            # InverseFrequency
-            # TFIDF
             doc.processar(self, self.listDocuments,
-                          'RawFrequency',
-                          'InverseFrequency',
-                          'TFIDF')
+                          self.algoritmo['tf'],
+                          self.algoritmo['idf'],
+                          self.algoritmo['tfidf'])
 
             self.listDocuments.append(doc)
             self.incQtdDocumentos()
