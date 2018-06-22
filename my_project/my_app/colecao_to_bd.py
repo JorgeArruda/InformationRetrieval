@@ -34,6 +34,8 @@ class Connection(object):
         colecao.qtStopword = colecao_bd['qtStopwords']
         colecao.qtAdverbio = colecao_bd['qtAdverbios']
 
+        colecao.qtTermoDocumento = json.loads(colecao_bd['qtDocument'])
+
         colecao.algoritmo = {
             'tf': 'DoubleNormalization',  # RawFrequency, DoubleNormalization, LogNormalization
             'idf': 'InverseFrequency',  # InverseFrequency

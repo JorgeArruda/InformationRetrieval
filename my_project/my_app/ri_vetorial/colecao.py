@@ -53,6 +53,7 @@ class Colecao(object):
         return -1
 
     def updateIdf(self):
+        print('Colecao().updateIdf()')
         strategyIDF = self.instanciar(idf_class, self.algoritmo['idf'])
         self.idf = {}
         for key in self.qtTermoDocumento:

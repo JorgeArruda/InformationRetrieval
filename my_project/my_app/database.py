@@ -16,6 +16,7 @@ class DB(object):
         colecao = Connection().startColecao()
 
         idf = json.dumps(colecao.updateIdf(), ensure_ascii=False)
+        # print('>>>>>>> idf', idf)
 
         id = Global.objects.values('id').distinct()[0]['id']
         document_edit = Global.objects.get(id=id)  # object to update
@@ -138,7 +139,6 @@ class DB(object):
         tf_adjusted = doc.tf
         tf_log = {}  # archive.get_tfLog(token['tokens'])
         tf_double = {}  # archive.get_tfDouble(token['tokens'], token['max'])
-        print('iii ', doc.tf)
         # Salva o novo documento no db
         Documents(
             name=filename, text=texto,

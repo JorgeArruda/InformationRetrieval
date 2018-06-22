@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from operator import itemgetter
 try:
     from .frequency import term_frequency as tf_class
     from .frequency import inverse_frequency as idf_class
     from .frequency import tf_idf as tfidf_class
 
     from .tokens.lex import tokenize
-    from .tokens.archive import remove_stopwords, get_frequency
-    from .termo import TermoColecao, Termo
+    from .tokens.stopwords import Stop
+    # from .termo import Termo
 except ImportError:
     from tokens.lex import tokenize
-    from tokens.archive import remove_stopwords, get_frequency
-    from termo import TermoColecao, Termo
+    from tokens.stopwords import Stop
+    # from termo import TermoColecao, Termo
 
 
 class Documento(object):
@@ -35,15 +36,26 @@ class Documento(object):
     def get_tokens(self, language='portuguese'):
         return tokenize(self.text, language)
 
+    def get_frequency(self, listTokens):
+        frequencyDocument = {}
+        for token in listTokens:
+            # print(token)
+            if token in frequencyDocument:
+                frequencyDocument[token] += 1
+            else:
+                frequencyDocument[token] = 1
+        return frequencyDocument
+
     def remove_stopwords(self):
-        result = remove_stopwords(get_frequency(self.get_tokens()))
-        print('result', result)
-        self.qtWord = result['qt_tok'] - result['qt_stopwords'] - result['qt_adverbios']
-        self.qtWordTotal = result['qt_tok_total'] - result['qt_stopwords'] - result['qt_stopwords_total']
-        self.qtStopword = result['qt_stopwords']
-        self.qtStopwordTotal = result['qt_stopwords_total']
-        self.qtAdverbio = result['qt_adverbios']
-        self.qtAdverbioTotal = result['qt_adverbios_total']
+        # Frequency and Dados <- -Stopword -Adv <- Frequency <- Tokens <- Text
+        result = self.clean(self.get_frequency(self.get_tokens()))
+        # print('result', result)
+        self.qtWord = result['qtWord'] - result['qtStopword'] - result['qtAdverbio']
+        self.qtWordTotal = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
+        self.qtStopword = result['qtStopword']
+        self.qtStopwordTotal = result['qtStopwordTotal']
+        self.qtAdverbio = result['qtAdverbio']
+        self.qtAdverbioTotal = result['qtAdverbioTotal']
 
         self.termoMaiorFrequencia = result['max']
 
@@ -55,7 +67,7 @@ class Documento(object):
         print('\nprocessar      ', strategyTF, '\n')
         # strategyIDF = self.instanciar(idf_class, strategyIDF)
         # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
-        print(self.tokens)
+        # print(self.tokens)
         for word in self.tokens:
             # termo = Termo()
             self.word = word
@@ -75,12 +87,48 @@ class Documento(object):
                 colecao.listTermosColecao.append(word)
 
             # self.listTermosProcessados.append(termo)
-        print(self.tf)
+        # print(self.tf)
 
     def instanciar(self, origem, strategy):
         try:
             return getattr(origem, strategy)()
         except AttributeError:
             print('Error, a classe %s não existe' % (strategy))
-    # def retirarStopWords()
-    # def buscarTermo()
+
+    def clean(self, tokens):
+        "Remove stopwords e verifica a quantidade removida. Return {'tokens', \
+        qtStopword', 'qtStopwordTotal', 'qtAdverbio', 'qtAdverbioTotal'}"
+        qtStopword = qtStopwordTotal = 0
+        qtAdverbio = qtAdverbioTotal = 0
+        qtWordTotal = qtWord = 0
+
+        max_f = 0
+        new_tokens = {}
+
+        if (not(type(tokens) != dict or len(tokens) == 0)):
+            stopwords = Stop().stopwords
+            adverbios = Stop().adverbios
+
+            for key in tokens:
+                qtWordTotal += tokens[key]
+                qtWord += 1
+                if (key in stopwords):
+                    qtStopword += 1
+                    qtStopwordTotal += tokens[key]
+                    # tokens.pop(key)
+                elif (key in adverbios):
+                    qtAdverbio += 1
+                    qtAdverbioTotal += tokens[key]
+                    # tokens.pop(key)
+                else:
+                    if tokens[key] > max_f:
+                        max_f = tokens[key]
+                    new_tokens[key] = tokens[key]
+        return {'tokens': new_tokens,
+                'qtStopword': qtStopword, 'qtStopwordTotal': qtStopwordTotal,
+                'qtAdverbio': qtAdverbio, 'qtAdverbioTotal': qtAdverbioTotal,
+                'qtWord': qtWord, 'qtWordTotal': qtWordTotal, 'max': max_f}
+
+
+def sort_dic(dic, indice=0):
+    return sorted(dic.items(), key=itemgetter(indice))

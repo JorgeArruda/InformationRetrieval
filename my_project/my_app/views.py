@@ -93,22 +93,22 @@ def getglobal(request):
     values = Global.objects.values().distinct()[0]
     qtDocument = len(Documents.objects.values('name').distinct())
     list_documents = Documents.objects.values('name', 'qtStopwords', 'qtStopwordsTotal', 'qtAdverbios', 'qtAdverbiosTotal', 'qtToken', 'qtTokenTotal').distinct()
-    qtWords = (values['qtTokens'] - values['qtStopwords'] - values['qtAdverbios'])
+    qtWordsTotal = (values['qtTokens'] + values['qtStopwords'] + values['qtAdverbios'])
 
     documents_dict = []
     for item in list_documents:
-        qtTokens = item['qtTokenTotal']-item['qtStopwordsTotal']-item['qtAdverbiosTotal']
+        qtTokensTotal = item['qtTokenTotal']+item['qtStopwordsTotal']+item['qtAdverbiosTotal']
         if item['qtTokenTotal'] != 0:
             documents_dict.append(
                 {'name': item['name'],
-                 'qtWords': item['qtTokenTotal'],
+                 'qtWords': qtTokensTotal,
                  'qtStopwords': item['qtStopwordsTotal'],
                  'qtAdverbios': item['qtAdverbiosTotal'],
-                 'qtTokens': qtTokens,
+                 'qtTokens': item['qtTokenTotal'],
                  'qtWordsP': 100,
-                 'qtStopwordsP': iround((item['qtStopwordsTotal']/item['qtTokenTotal'])*100),
-                 'qtAdverbiosP': iround((item['qtAdverbiosTotal']/item['qtTokenTotal'])*100),
-                 'qtTokensP': iround((qtTokens/item['qtTokenTotal'])*100),
+                 'qtStopwordsP': iround((item['qtStopwordsTotal']/qtTokensTotal)*100),
+                 'qtAdverbiosP': iround((item['qtAdverbiosTotal']/qtTokensTotal)*100),
+                 'qtTokensP': iround((item['qtTokenTotal']/qtTokensTotal)*100),
                  'qtDocument': qtDocument,
                  'documents': list_documents})
         else:
@@ -128,14 +128,14 @@ def getglobal(request):
     info = []
     if (qtDocument != 0):
         info.append(
-            {'qtWords': values['qtTokens'],
+            {'qtWords': qtWordsTotal,
              'qtStopwords': values['qtStopwords'],
              'qtAdverbios': values['qtAdverbios'],
-             'qtTokens': qtWords,
+             'qtTokens': values['qtTokens'],
              'qtWordsP': 100,
-             'qtStopwordsP': iround((values['qtStopwords']/values['qtTokens'])*100),
-             'qtAdverbiosP': iround((values['qtAdverbios']/values['qtTokens'])*100),
-             'qtTokensP': iround((qtWords/values['qtTokens'])*100),
+             'qtStopwordsP': iround((values['qtStopwords']/qtWordsTotal)*100),
+             'qtAdverbiosP': iround((values['qtAdverbios']/qtWordsTotal)*100),
+             'qtTokensP': iround((values['qtTokens']/qtWordsTotal)*100),
              'qtDocument': qtDocument,
              'documents': documents_dict})
     else:

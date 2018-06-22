@@ -28,7 +28,7 @@ class Read(object):
                 self.text = self.image(path+name)
         except FileNotFoundError:
             print("No such file or directory: ", path+name)
-        print('..........', self.text)
+        # print('..........', self.text)
 
     def html(self, name):
         if type(name) != str:

@@ -53,5 +53,5 @@ def tokenize(text, language='portuguese'):
         if not tok:
             break
         listTokens.append(tok.value.lower())
-    print('Lex ... listTokens -- ', listTokens)
+    # print('Lex ... listTokens -- ', listTokens)
     return sorted(listTokens)
