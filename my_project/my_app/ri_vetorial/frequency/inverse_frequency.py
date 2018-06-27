@@ -32,6 +32,9 @@ class InverseFrequencySmooth(object):
     def __init__(self):
         pass
 
+    def calcPeso(self, qtDoc, qtDocTermo):
+        return math.log2(1 + (qtDoc / qtDocTermo))
+
 
 class InverseFrequencyMax(object):
     def __init__(self):

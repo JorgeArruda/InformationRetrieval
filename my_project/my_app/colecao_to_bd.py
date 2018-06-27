@@ -38,7 +38,7 @@ class Connection(object):
 
         colecao.algoritmo = {
             'tf': 'DoubleNormalization',  # RawFrequency, DoubleNormalization, LogNormalization
-            'idf': 'InverseFrequency',  # InverseFrequency
+            'idf': 'InverseFrequency',  # InverseFrequency, InverseFrequencySmooth
             'tfidf': 'TFIDF'}  # TFIDF
 
         return colecao
