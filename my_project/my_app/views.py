@@ -175,6 +175,12 @@ def updateall(request):
     return render(request, 'my_app/home.html', {'documents': documents})
 
 
+@csrf_exempt
+def search(request):
+    query = request.POST['text']
+    return render(request, 'my_app/search.html', {'documents': 'oi'})
+
+
 def documents(request):
     return render(request, 'my_app/documents.html', {'title': 'Documentos'})
 

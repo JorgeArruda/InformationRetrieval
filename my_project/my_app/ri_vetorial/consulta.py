@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from operator import itemgetter
 try:
     from .frequency import term_frequency as tf_class
     from .frequency import inverse_frequency as idf_class
@@ -15,22 +14,37 @@ except ImportError:
     # from termo import TermoColecao, Termo
 
 
-class Documento(object):
-    def __init__(self, nome, texto):
-        self.nome = nome
-        self.text = texto
-
+class Consulta(object):
+    def __init__(self, query=''):
+        self.text = query
         self.qtWord = 0
         self.qtWordTotal = 0
         self.qtStopword = 0
         self.qtStopwordTotal = 0
         self.qtAdverbio = 0
         self.qtAdverbioTotal = 0
+        self.vetor = []
+        self.tokens = []
 
-        self.termoMaiorFrequencia = 0
-        self.listaTermos = []
-        self.tokens = {}
-        self.tf = {}
+    def processar(self):
+        strategyTF = tf_class.DoubleNormalization()
+        print('\nprocessar      ', strategyTF, '\n')
+        for word in self.tokens:
+            # termo = Termo()
+            self.word = word
+            frequency = self.tokens[word]
+
+            self.tf[word] = strategyTF.calcPeso(frequency, self)
+
+            if (word in colecao.qtTermoDocumento):
+                colecao.qtTermoDocumento[word] += 1
+            else:
+                colecao.qtTermoDocumento[word] = 1
+
+            if not (word in colecao.listTermosColecao):
+                colecao.listTermosColecao.append(word)
+
+        # print(self.tf)
 
     def get_tokens(self, language='portuguese'):
         return tokenize(self.text, language)
@@ -60,38 +74,6 @@ class Documento(object):
 
         self.tokens = result['tokens']
         self.listaTermos = sorted(list(self.tokens.keys()))
-
-    def processar(self, colecao):
-        strategyTF = self.instanciar(tf_class, colecao.algoritmo['tf'])
-        print('\nprocessar      ', strategyTF, '\n')
-        # strategyIDF = self.instanciar(idf_class, strategyIDF)
-        # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
-        # print(self.tokens)
-        for word in self.tokens:
-            # termo = Termo()
-            self.word = word
-            frequency = self.tokens[word]
-            # termo.tf = strategyTF.calcularPeso(termo, self)
-            # termo.idf = idf = strategyIDF.calcularPeso(termo, listaDocumentos)
-            # termo.tfIdf = termo.tf * termo.idf
-
-            self.tf[word] = strategyTF.calcPeso(frequency, self)
-
-            if (word in colecao.qtTermoDocumento):
-                colecao.qtTermoDocumento[word] += 1
-            else:
-                colecao.qtTermoDocumento[word] = 1
-
-            if not (word in colecao.listTermosColecao):
-                colecao.listTermosColecao.append(word)
-
-        # print(self.tf)
-
-    def instanciar(self, origem, strategy):
-        try:
-            return getattr(origem, strategy)()
-        except AttributeError:
-            print('Error, a classe %s não existe' % (strategy))
 
     def clean(self, tokens):
         "Remove stopwords e verifica a quantidade removida. Return {'tokens', \

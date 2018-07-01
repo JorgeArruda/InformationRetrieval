@@ -26,6 +26,13 @@
                     {% csrf_token %}
                     <button onclick="updateAll()">Atualizar dados</button>
                 </form>
+                <div>
+                    <input type="text" id="inputBusca">
+                    <form class="form-signin" method="POST">
+                        {% csrf_token %}
+                        <button onclick="buscar()">Buscar</button>
+                    </form>
+                </div>
             </div>
             <!-- <div style="width: 120px;" class="progress">
                 <div id="progress-file" class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"

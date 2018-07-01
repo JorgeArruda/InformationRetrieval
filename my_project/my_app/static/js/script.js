@@ -115,3 +115,13 @@ function updateAll() {
     fd.append('request', 'updateAll');
     xhr.send(fd);
 }
+
+function buscar() {
+    var text = document.getElementById('inputBusca').value;
+    console.log('Buscar: ', text);
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', 'search', true);
+    var fd = new FormData();
+    fd.append('text', text);
+    xhr.send(fd);
+}
