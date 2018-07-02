@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import ply.lex as lex
-import nltk
+# import nltk
 
 tokens = (
   'WORD',
@@ -42,7 +42,7 @@ def tokenize(text, language='portuguese'):
     "Tokenize -> remove stopwords -> returns tokens"
 
     # Get stopwords lib nltk. language == 'portuguese', 'english'...
-    stopwords = nltk.corpus.stopwords.words(language)
+    # stopwords = nltk.corpus.stopwords.words(language)
 
     lexer = MyLexer()   # lex analize object
     lexer.input(text)

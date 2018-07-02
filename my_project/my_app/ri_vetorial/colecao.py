@@ -6,6 +6,7 @@ try:
     from .documento import Documento
 except ImportError:
     from termo import TermoColecao, Termo
+    from frequency import inverse_frequency as idf_class
     from documento import Documento
 import math
 
@@ -27,6 +28,11 @@ class Colecao(object):
                           'idf': 'InverseFrequency',  # InverseFrequency
                           'tfidf': 'TFIDF'}  # TFIDF
 
+    def __str__(self):
+        return 'qtDocumentos: '+str(self.qtDocumentos)+', qtWord: '+\
+            str(self.qtWord)+', qtStopword: '+str(self.qtStopword)+\
+            ', qtAdverbio: '+str(self.qtAdverbio)
+
     def addDocumento(self, nome, text):
         posicao = self.pesquisarDocumento(nome)
         if posicao == -1:
@@ -34,8 +40,13 @@ class Colecao(object):
             doc.remove_stopwords()
             doc.processar(self)
 
+            self.qtWord += doc.qtWordTotal
+            self.qtStopword += doc.qtStopwordTotal
+            self.qtAdverbio += doc.qtAdverbioTotal
+
             self.listDocuments.append(doc)
             self.qtDocumentos += 1
+            self.updateIdf()
             return doc
         else:
             print('O documento %s já está na coleção' % (nome))

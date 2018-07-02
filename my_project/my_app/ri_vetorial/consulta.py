@@ -9,6 +9,10 @@ try:
     from .tokens.stopwords import Stop
     # from .termo import Termo
 except ImportError:
+    from frequency import term_frequency as tf_class
+    from frequency import inverse_frequency as idf_class
+    from frequency import tf_idf as tfidf_class
+
     from tokens.lex import tokenize
     from tokens.stopwords import Stop
     # from termo import TermoColecao, Termo
@@ -17,34 +21,17 @@ except ImportError:
 class Consulta(object):
     def __init__(self, query=''):
         self.text = query
+
         self.qtWord = 0
-        self.qtWordTotal = 0
         self.qtStopword = 0
-        self.qtStopwordTotal = 0
         self.qtAdverbio = 0
-        self.qtAdverbioTotal = 0
-        self.vetor = []
-        self.tokens = []
+        self.termoMaiorFrequencia = 0
 
-    def processar(self):
-        strategyTF = tf_class.DoubleNormalization()
-        print('\nprocessar      ', strategyTF, '\n')
-        for word in self.tokens:
-            # termo = Termo()
-            self.word = word
-            frequency = self.tokens[word]
+        self.tokens = {}
+        self.listaTermos = []
 
-            self.tf[word] = strategyTF.calcPeso(frequency, self)
-
-            if (word in colecao.qtTermoDocumento):
-                colecao.qtTermoDocumento[word] += 1
-            else:
-                colecao.qtTermoDocumento[word] = 1
-
-            if not (word in colecao.listTermosColecao):
-                colecao.listTermosColecao.append(word)
-
-        # print(self.tf)
+        self.remove_stopwords()
+        self.processar()
 
     def get_tokens(self, language='portuguese'):
         return tokenize(self.text, language)
@@ -63,17 +50,21 @@ class Consulta(object):
         # Frequency and Dados <- -Stopword -Adv <- Frequency <- Tokens <- Text
         result = self.clean(self.get_frequency(self.get_tokens()))
         # print('result', result)
-        self.qtWord = result['qtWord'] - result['qtStopword'] - result['qtAdverbio']
-        self.qtWordTotal = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
-        self.qtStopword = result['qtStopword']
-        self.qtStopwordTotal = result['qtStopwordTotal']
-        self.qtAdverbio = result['qtAdverbio']
-        self.qtAdverbioTotal = result['qtAdverbioTotal']
-
+        self.qtWord = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
+        self.qtStopword = result['qtStopwordTotal']
+        self.qtAdverbio = result['qtAdverbioTotal']
         self.termoMaiorFrequencia = result['max']
-
         self.tokens = result['tokens']
         self.listaTermos = sorted(list(self.tokens.keys()))
+
+    def processar(self):
+        strategyTF = tf_class.DoubleNormalization()
+        print('\nprocessar      ', strategyTF, '\n')
+        for word in self.tokens:
+            # termo = Termo()
+            frequency = self.tokens[word]
+
+            self.tokens[word] = strategyTF.calcPeso(frequency, self)
 
     def clean(self, tokens):
         "Remove stopwords e verifica a quantidade removida. Return {'tokens', \

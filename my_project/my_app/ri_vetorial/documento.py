@@ -10,6 +10,10 @@ try:
     from .tokens.stopwords import Stop
     # from .termo import Termo
 except ImportError:
+    from frequency import term_frequency as tf_class
+    from frequency import inverse_frequency as idf_class
+    from frequency import tf_idf as tfidf_class
+
     from tokens.lex import tokenize
     from tokens.stopwords import Stop
     # from termo import TermoColecao, Termo
@@ -63,13 +67,12 @@ class Documento(object):
 
     def processar(self, colecao):
         strategyTF = self.instanciar(tf_class, colecao.algoritmo['tf'])
-        print('\nprocessar      ', strategyTF, '\n')
+        print('\t\tprocessar      ', strategyTF)
         # strategyIDF = self.instanciar(idf_class, strategyIDF)
         # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
         # print(self.tokens)
         for word in self.tokens:
             # termo = Termo()
-            self.word = word
             frequency = self.tokens[word]
             # termo.tf = strategyTF.calcularPeso(termo, self)
             # termo.idf = idf = strategyIDF.calcularPeso(termo, listaDocumentos)
