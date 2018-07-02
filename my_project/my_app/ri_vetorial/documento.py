@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
 try:
-    from .frequency import term_frequency as tf_class
+    from .frequency import term_frequency as tf
     from .frequency import inverse_frequency as idf_class
     from .frequency import tf_idf as tfidf_class
 
@@ -10,7 +10,7 @@ try:
     from .tokens.stopwords import Stop
     # from .termo import Termo
 except ImportError:
-    from frequency import term_frequency as tf_class
+    from frequency import term_frequency as tf
     from frequency import inverse_frequency as idf_class
     from frequency import tf_idf as tfidf_class
 
@@ -24,8 +24,8 @@ class Documento(object):
         self.nome = nome
         self.text = texto
 
-        self.qtWord = 0
-        self.qtWordTotal = 0
+        self.qtToken = 0
+        self.qtTokenTotal = 0
         self.qtStopword = 0
         self.qtStopwordTotal = 0
         self.qtAdverbio = 0
@@ -35,6 +35,8 @@ class Documento(object):
         self.listaTermos = []
         self.tokens = {}
         self.tf = {}
+        self.logNormalization = {}
+        self.doubleNormalization = {}
 
     def get_tokens(self, language='portuguese'):
         return tokenize(self.text, language)
@@ -53,8 +55,8 @@ class Documento(object):
         # Frequency and Dados <- -Stopword -Adv <- Frequency <- Tokens <- Text
         result = self.clean(self.get_frequency(self.get_tokens()))
         # print('result', result)
-        self.qtWord = result['qtWord'] - result['qtStopword'] - result['qtAdverbio']
-        self.qtWordTotal = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
+        self.qtToken = result['qtWord'] - result['qtStopword'] - result['qtAdverbio']
+        self.qtTokenTotal = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
         self.qtStopword = result['qtStopword']
         self.qtStopwordTotal = result['qtStopwordTotal']
         self.qtAdverbio = result['qtAdverbio']
@@ -66,8 +68,8 @@ class Documento(object):
         self.listaTermos = sorted(list(self.tokens.keys()))
 
     def processar(self, colecao):
-        strategyTF = self.instanciar(tf_class, colecao.algoritmo['tf'])
-        print('\t\tprocessar      ', strategyTF)
+        strategyTF = self.instanciar(tf, colecao.algoritmo['tf'])
+        # print('\t\tprocessar      ', strategyTF)
         # strategyIDF = self.instanciar(idf_class, strategyIDF)
         # strategyTFIDF = self.instanciar(tfidf_class, strategyTFIDF)
         # print(self.tokens)
@@ -79,6 +81,8 @@ class Documento(object):
             # termo.tfIdf = termo.tf * termo.idf
 
             self.tf[word] = strategyTF.calcPeso(frequency, self)
+            self.logNormalization[word] = tf.LogNormalization().calcPeso(frequency, self)
+            self.doubleNormalization[word] = tf.DoubleNormalization().calcPeso(frequency, self)
 
             if (word in colecao.qtTermoDocumento):
                 colecao.qtTermoDocumento[word] += 1

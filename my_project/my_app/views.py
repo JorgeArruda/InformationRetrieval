@@ -74,8 +74,8 @@ def getdocument(request):
         var = 1
         for word in words:
             line.append({'indice': var, 'word': word[0], 'frequency': word[1],
-                         'tf': round(tf[word[0]], 2), 'tfLog': '-',
-                         'tfDouble': '-'})
+                         'tf': round(tf[word[0]], 2), 'tfLog': round(tfLog[word[0]], 2),
+                         'tfDouble': round(tfDouble[word[0]], 2)})
             var += 1
         # for word in words:
         #     line.append({'indice': var, 'word': word[0], 'frequency': word[1],

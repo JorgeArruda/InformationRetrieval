@@ -3,6 +3,7 @@
 from colecao import Colecao
 from documento import Documento
 from consulta import Consulta
+from operator import itemgetter
 
 
 doc = {
@@ -14,22 +15,25 @@ col = Colecao()
 
 for key in doc:
     documento = col.addDocumento(key, doc[key])
-    print('Salvo ...', documento.nome)
+    # print('Salvo ...', documento.nome)
 
-print('\n...',col)
+# print('\n...',col)
 
 query = 'a objetos é um paradigma Vírus da Imunodeficiência Humana sífilis projeto e programação'
 
 consulta = Consulta(query)
-print(consulta.tokens)
-print(consulta.listaTermos)
-print(consulta.qtStopword)
+# print(consulta.tokens)
+# print(consulta.listaTermos)
+# print(consulta.qtStopword)
 
-def calcular_consulta(consulta, colecao):
+def sort_dic(dic, indice=0, reverse=False):
+    return sorted(dic.items(), key=itemgetter(indice), reverse=reverse)
+
+def calcular_similaridade(consulta, colecao):
     idf = colecao.idf
     docs = colecao.listDocuments
-    words = colecao.listTermosColecao
-
+    # words = colecao.listTermosColecao
+    result = {}
     for doc in docs:
         sum_q = sum_d = similaridade = 0
         for termo in doc.tf:
@@ -55,6 +59,8 @@ def calcular_consulta(consulta, colecao):
         sum_q =  (sum_q**2)**(0.5)
         sum_d =  (sum_d**2)**(0.5)
         similaridade = similaridade / (sum_q * sum_d)
-        print(doc.nome, ': ', similaridade)
+        result[doc.nome] = similaridade
+    return sort_dic(result, 1, True)
 
-calcular_consulta(consulta, col)
+r = calcular_similaridade(consulta, col)
+print(r)

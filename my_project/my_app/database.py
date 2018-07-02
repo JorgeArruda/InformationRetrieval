@@ -137,8 +137,8 @@ class DB(object):
         # token = archive.remove_stopwords(token)
         # Calcula a tf ajustada pelo tamanho do documento
         tf_adjusted = doc.tf
-        tf_log = {}  # archive.get_tfLog(token['tokens'])
-        tf_double = {}  # archive.get_tfDouble(token['tokens'], token['max'])
+        tf_log = doc.logNormalization  # archive.get_tfLog(token['tokens'])
+        tf_double = doc.doubleNormalization  # archive.get_tfDouble(token['tokens'], token['max'])
         # Salva o novo documento no db
         Documents(
             name=filename, text=texto,
@@ -150,7 +150,7 @@ class DB(object):
             qtStopwordsTotal=doc.qtStopwordTotal,
             qtAdverbios=doc.qtAdverbio,
             qtAdverbiosTotal=doc.qtAdverbioTotal,
-            qtToken=doc.qtWord, qtTokenTotal=doc.qtWordTotal,
+            qtToken=doc.qtToken, qtTokenTotal=doc.qtTokenTotal,
             max=doc.termoMaiorFrequencia).save()
 
         # # Salva a frequencia global atualizada

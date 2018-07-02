@@ -22,7 +22,7 @@ class Consulta(object):
     def __init__(self, query=''):
         self.text = query
 
-        self.qtWord = 0
+        self.qtToken = 0
         self.qtStopword = 0
         self.qtAdverbio = 0
         self.termoMaiorFrequencia = 0
@@ -50,7 +50,7 @@ class Consulta(object):
         # Frequency and Dados <- -Stopword -Adv <- Frequency <- Tokens <- Text
         result = self.clean(self.get_frequency(self.get_tokens()))
         # print('result', result)
-        self.qtWord = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
+        self.qtToken = result['qtWordTotal'] - result['qtStopwordTotal'] - result['qtAdverbioTotal']
         self.qtStopword = result['qtStopwordTotal']
         self.qtAdverbio = result['qtAdverbioTotal']
         self.termoMaiorFrequencia = result['max']
@@ -59,7 +59,7 @@ class Consulta(object):
 
     def processar(self):
         strategyTF = tf_class.DoubleNormalization()
-        print('\nprocessar      ', strategyTF, '\n')
+        # print('\nprocessar      ', strategyTF, '\n')
         for word in self.tokens:
             # termo = Termo()
             frequency = self.tokens[word]
@@ -99,7 +99,3 @@ class Consulta(object):
                 'qtStopword': qtStopword, 'qtStopwordTotal': qtStopwordTotal,
                 'qtAdverbio': qtAdverbio, 'qtAdverbioTotal': qtAdverbioTotal,
                 'qtWord': qtWord, 'qtWordTotal': qtWordTotal, 'max': max_f}
-
-
-def sort_dic(dic, indice=0):
-    return sorted(dic.items(), key=itemgetter(indice))

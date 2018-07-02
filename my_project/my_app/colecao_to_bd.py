@@ -4,7 +4,8 @@ from .models import Documents
 from .models import Global
 # from .database import DB
 
-from .ri_vetorial.colecao import Colecao
+from .ri_vetorial.documento import Documento
+from .ri_vetorial.colecao import Colecao, sort_dic
 from .ri_vetorial.tokens import archive as archive
 from .ri_vetorial.tokens.files import Read
 
@@ -23,14 +24,14 @@ class Connection(object):
 
         colecao.tokens = json.loads(colecao_bd['words'])
         colecao.listTermosColecao = sorted(list(colecao.tokens.keys()))
-
         colecao.qtDocumentos = len(Documents.objects.values('name').distinct())
         colecao.qtTermos = len(colecao.listTermosColecao)
 
         if colecao.qtDocumentos != 0:
             colecao.listDocuments = list(Documents.objects.values('name').distinct()[0].values())
+        colecao.listDocuments = self.get_documents()
 
-        colecao.qtWord = colecao_bd['qtTokens']
+        colecao.qtToken = colecao_bd['qtTokens']
         colecao.qtStopword = colecao_bd['qtStopwords']
         colecao.qtAdverbio = colecao_bd['qtAdverbios']
 
@@ -42,6 +43,36 @@ class Connection(object):
             'tfidf': 'TFIDF'}  # TFIDF
 
         return colecao
+
+    def get_documents(self):
+        docs = Documents.objects.values(
+            'name', 'text', 'tokens',
+            'qtStopwords', 'qtStopwordsTotal',
+            'qtAdverbios', 'qtAdverbiosTotal',
+            'qtToken', 'qtTokenTotal',
+            'tf', 'tfLog', 'tfDouble', 'max').distinct()
+
+        temp = []
+        for doc in docs:
+            d = Documento(doc['name'], doc['text'])
+            print(d.nome)
+            d.tokens = json.loads(doc['tokens'])
+            d.qtStopword = doc['qtStopwords']
+            d.qtStopwordTotal = doc['qtStopwordsTotal']
+            d.qtAdverbio = doc['qtAdverbios']
+            d.qtAdverbioTotal = doc['qtAdverbiosTotal']
+            d.qtToken = doc['qtToken']
+            d.qtTokenTotal = doc['qtTokenTotal']
+
+            d.termoMaiorFrequencia = doc['max']
+            d.listaTermos = sorted(list(d.tokens.keys()))
+
+            d.tf = json.loads(doc['tf'])
+            d.logNormalization = json.loads(doc['tfLog'])
+            d.doubleNormalization = json.loads(doc['tfDouble'])
+
+            temp.append(d)
+        return temp
 
     def verificaQtDocumentos(self):
         qtDocument = len(Documents.objects.values('name').distinct())
