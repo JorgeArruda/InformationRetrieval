@@ -26,7 +26,7 @@ class Colecao(object):
 
         self.qtTermoDocumento = {}
         self.algoritmo = {'tf': 'DoubleNormalization',  # RawFrequency, DoubleNormalization, LogNormalization
-                          'idf': 'InverseFrequency',  # InverseFrequency
+                          'idf': 'InverseFrequencySmooth',  # InverseFrequency, InverseFrequencySmooth
                           'tfidf': 'TFIDF'}  # TFIDF
 
     def __str__(self):
@@ -77,38 +77,42 @@ class Colecao(object):
             return getattr(origem, nome)()
         except AttributeError:
             print('Error, a classe %s não existe' % (nome))
-    
+
     def calcular_similaridade(self, consulta):
         idf = self.idf
         docs = self.listDocuments
         # words = self.listTermosColecao
         result = {}
         for doc in docs:
-            sum_q = sum_d = similaridade = 0
+            sum_q = sum_d = similaridade = 0.0
             for termo in doc.tf:
-                idff = 0
+                idff = 0.0
                 if termo in idf:
                     idff = idf[termo]
-                sum_d += doc.tf[termo] * idff
+                sum_d += (doc.tf[termo] * idff)**2
 
             for termo in consulta.tokens:
-                idff = 0
+                idff = 0.0
                 if termo in idf:
                     idff = idf[termo]
-                sum_q += consulta.tokens[termo] * idff
+                sum_q += (consulta.tokens[termo] * idff)**2
 
             for word in consulta.tokens:
-                doc_weight = 0
+                doc_weight = 0.0
                 if word in doc.listaTermos:
                     doc_weight = doc.tf[word] * idf[word]
-                idff = 0
+                idff = 0.0
                 if word in idf:
                     idff = idf[word]
                 similaridade += consulta.tokens[word] * (idff * doc_weight)
-            sum_q =  (sum_q**2)**(0.5)
-            sum_d =  (sum_d**2)**(0.5)
-            similaridade = similaridade / (sum_q * sum_d)
-            result[doc.nome] = similaridade
+            sum_q =  sum_q**(0.5)
+            sum_d =  sum_d**(0.5)
+            if sum_d == 0.0 or sum_q == 0.0:
+                similaridade = 0.0
+            else:
+                similaridade = similaridade / (sum_q * sum_d)
+            if similaridade > 0.0:
+                result[doc.nome] = similaridade
         return sort_dic(result, 1, True)
 
 

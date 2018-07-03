@@ -1,5 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.conf import settings
+from django.utils.datastructures import MultiValueDictKeyError
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Documents
@@ -172,13 +173,20 @@ def getidf(request):
 def updateall(request):
     DB().update_global_all()
     documents = Documents.objects.values('name').distinct()
-    return render(request, 'my_app/home.html', {'documents': documents})
+    return render(request, 'my_app/test.html', {'documents': documents})
 
 
 @csrf_exempt
 def search(request):
-    query = request.POST['text']
-    return render(request, 'my_app/search.html', {'documents': 'oi'})
+    try:
+        query = request.POST['text']
+        print('Query: ', query)
+        dd = DB().search(query)
+        for d in dd:
+            print('Name: ', d['name'])
+    except MultiValueDictKeyError:
+        print('Error search() in views.py line 187')
+    return render(request, 'my_app/search.html', {'result': 'DB().search(query)'})
 
 
 def documents(request):

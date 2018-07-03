@@ -6,6 +6,7 @@ from .models import Global
 
 from .ri_vetorial.documento import Documento
 from .ri_vetorial.colecao import Colecao, sort_dic
+from .ri_vetorial.consulta import Consulta
 from .ri_vetorial.tokens import archive as archive
 from .ri_vetorial.tokens.files import Read
 
@@ -23,6 +24,7 @@ class Connection(object):
         colecao_bd = Global.objects.values().distinct()[0]
 
         colecao.tokens = json.loads(colecao_bd['words'])
+        colecao.idf = json.loads(colecao_bd['idf'])
         colecao.listTermosColecao = sorted(list(colecao.tokens.keys()))
         colecao.qtDocumentos = len(Documents.objects.values('name').distinct())
         colecao.qtTermos = len(colecao.listTermosColecao)
@@ -43,6 +45,9 @@ class Connection(object):
             'tfidf': 'TFIDF'}  # TFIDF
 
         return colecao
+
+    def startSearch(self, query):
+        return Consulta(query)
 
     def get_documents(self):
         docs = Documents.objects.values(

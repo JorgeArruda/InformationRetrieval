@@ -157,3 +157,19 @@ class DB(object):
         self.update_global_insert(filename)
         self.update_global_idf()
         # Global(id=1, words=json.dumps(words, ensure_ascii=False)).save()
+
+    def search(self, query, qtd=[0, 19]):
+        colecao = Connection().startColecao()
+        consulta = Connection().startSearch(query)
+
+        docs = colecao.calcular_similaridade(consulta)
+
+        qtd[0] = qtd[0] if qtd[0] >= 0 else 0
+        qtd[1] = qtd[1] if qtd[1] < len(docs) else len(docs) - 1
+
+        docs = docs[qtd[0]:qtd[1]]
+        docs_db = []
+        for doc in docs:
+            docs_db.append(Documents.objects.values(
+                'name', 'text').filter(name=doc[0])[0])
+        return docs_db

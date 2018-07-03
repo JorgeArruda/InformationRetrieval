@@ -15,19 +15,19 @@ col = Colecao()
 
 for key in doc:
     documento = col.addDocumento(key, doc[key])
-    # print('Salvo ...', documento.nome)
 
-# print('\n...',col)
-
-query = 'a objetos é um paradigma Vírus da Imunodeficiência Humana sífilis projeto e programação'
+query = 'ggggggg'
+# query = 'a casa '
 
 consulta = Consulta(query)
 # print(consulta.tokens)
 # print(consulta.listaTermos)
 # print(consulta.qtStopword)
 
+
 def sort_dic(dic, indice=0, reverse=False):
     return sorted(dic.items(), key=itemgetter(indice), reverse=reverse)
+
 
 def calcular_similaridade(consulta, colecao):
     idf = colecao.idf
@@ -35,32 +35,37 @@ def calcular_similaridade(consulta, colecao):
     # words = colecao.listTermosColecao
     result = {}
     for doc in docs:
-        sum_q = sum_d = similaridade = 0
+        sum_q = sum_d = similaridade = 0.0
         for termo in doc.tf:
-            idff = 0
+            idff = 0.0
             if termo in idf:
                 idff = idf[termo]
-            sum_d += doc.tf[termo] * idff
+            sum_d += (doc.tf[termo] * idff)**2
 
         for termo in consulta.tokens:
-            idff = 0
+            idff = 0.0
             if termo in idf:
                 idff = idf[termo]
-            sum_q += consulta.tokens[termo] * idff
+            sum_q += (consulta.tokens[termo] * idff)**2
 
         for word in consulta.tokens:
             doc_weight = 0
             if word in doc.listaTermos:
+                print('....', doc.tf)
                 doc_weight = doc.tf[word] * idf[word]
-            idff = 0
+            idff = 0.0
             if word in idf:
                 idff = idf[word]
             similaridade += consulta.tokens[word] * (idff * doc_weight)
-        sum_q =  (sum_q**2)**(0.5)
-        sum_d =  (sum_d**2)**(0.5)
-        similaridade = similaridade / (sum_q * sum_d)
-        result[doc.nome] = similaridade
+        print('q', sum_q, '  d', sum_d)
+        sum_q =  sum_q**(0.5)
+        sum_d =  sum_d**(0.5)
+        print('q', sum_q, '  d', sum_d)
+        if sum_d == 0 or sum_q == 0:
+            result[doc.nome] = 0
+        else:
+            result[doc.nome] = similaridade / (sum_q * sum_d)
     return sort_dic(result, 1, True)
 
-r = calcular_similaridade(consulta, col)
+r = col.calcular_similaridade(consulta)
 print(r)

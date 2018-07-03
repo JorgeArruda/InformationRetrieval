@@ -26,6 +26,13 @@
                     {% csrf_token %}
                     <button onclick="updateAll()">Atualizar dados</button>
                 </form>
+                <div>
+                    <form class="form-signin" action="{% url 'search' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" id="text" name="text">
+                        <input type="submit" value="Search">
+                    </form>
+                </div>
             </div>
         </div>
 
