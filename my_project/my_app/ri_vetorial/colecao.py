@@ -113,6 +113,7 @@ class Colecao(object):
                 similaridade = similaridade / (sum_q * sum_d)
             if similaridade > 0.0:
                 result[doc.nome] = similaridade
+        print('... colecao()calcular_similaridade()  result: ', result)
         return sort_dic(result, 1, True)
 
 

@@ -24,6 +24,9 @@ class Connection(object):
         colecao_bd = Global.objects.values().distinct()[0]
 
         colecao.tokens = json.loads(colecao_bd['words'])
+        # print('IDF       ....       ', colecao_bd['idf'])
+        if colecao_bd['idf'] == None:
+            colecao_bd['idf'] = '{}'
         colecao.idf = json.loads(colecao_bd['idf'])
         colecao.listTermosColecao = sorted(list(colecao.tokens.keys()))
         colecao.qtDocumentos = len(Documents.objects.values('name').distinct())
@@ -60,7 +63,7 @@ class Connection(object):
         temp = []
         for doc in docs:
             d = Documento(doc['name'], doc['text'])
-            print(d.nome)
+            # print(d.nome)
             d.tokens = json.loads(doc['tokens'])
             d.qtStopword = doc['qtStopwords']
             d.qtStopwordTotal = doc['qtStopwordsTotal']

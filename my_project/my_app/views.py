@@ -178,15 +178,16 @@ def updateall(request):
 
 @csrf_exempt
 def search(request):
+    docs = []
     try:
         query = request.POST['text']
         print('Query: ', query)
-        dd = DB().search(query)
-        for d in dd:
-            print('Name: ', d['name'])
+        docs = DB().search(query)
+        for doc in docs:
+            print('Name: ', doc['name'])
     except MultiValueDictKeyError:
         print('Error search() in views.py line 187')
-    return render(request, 'my_app/search.html', {'result': 'DB().search(query)'})
+    return render(request, 'my_app/search.html', {'list_doc': docs})
 
 
 def documents(request):

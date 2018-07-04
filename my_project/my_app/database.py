@@ -14,9 +14,9 @@ class DB(object):
     def update_global_idf(self):
         "Atualiza o idf da coleção"
         colecao = Connection().startColecao()
-
+        # print('17 >>>>>>> idf', colecao.idf)
         idf = json.dumps(colecao.updateIdf(), ensure_ascii=False)
-        # print('>>>>>>> idf', idf)
+        # print('19 >>>>>>> idf', idf)
 
         id = Global.objects.values('id').distinct()[0]['id']
         document_edit = Global.objects.get(id=id)  # object to update
@@ -158,18 +158,19 @@ class DB(object):
         self.update_global_idf()
         # Global(id=1, words=json.dumps(words, ensure_ascii=False)).save()
 
-    def search(self, query, qtd=[0, 19]):
+    def search(self, query):
         colecao = Connection().startColecao()
         consulta = Connection().startSearch(query)
 
         docs = colecao.calcular_similaridade(consulta)
-
-        qtd[0] = qtd[0] if qtd[0] >= 0 else 0
-        qtd[1] = qtd[1] if qtd[1] < len(docs) else len(docs) - 1
-
-        docs = docs[qtd[0]:qtd[1]]
+        # qtd[0] = qtd[0] if qtd[0] >= 0 else 0
+        # qtd[1] = qtd[1] if qtd[1] < len(docs) else len(docs)+1
+        # docs = docs[qtd[0]:qtd[1]]
         docs_db = []
         for doc in docs:
-            docs_db.append(Documents.objects.values(
-                'name', 'text').filter(name=doc[0])[0])
+            temp = Documents.objects.values(
+                'name', 'text').filter(name=doc[0])[0]
+            temp['name'] = temp['name'].split(".")[0]
+            temp['similaridade'] = round(doc[1], 5)
+            docs_db.append(temp)
         return docs_db

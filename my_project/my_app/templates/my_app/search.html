@@ -13,6 +13,23 @@
 
 {% block container_right %}
     <div id="div_show" style="width: 70%; height: 100%; display: inline; position: relative; background-color: white; overflow: hidden; overflow-y: scroll;">
-        <p>sij</p>
+        <p style="margin: 10px;">Resultados </p>
+        {% for doc in list_doc %}
+            <p></p>
+            <div class="flip">{{ doc.name }}  -  {{ doc.similaridade }}</div>
+            <div id={{ doc.name }} class="panel">{{ doc.text }}</div>
+        {% endfor %}
     </div>
+    <script> 
+        $(document).ready(function(){
+            $(".flip").click(function(event){
+                let nome = event.target.innerText.split(' ')[0]
+                console.log("#"+nome)
+                let ele = document.getElementById(nome)
+                nome = "#"+nome
+                $(nome).slideToggle(360);
+                // $(".panel").slideToggle("fast");
+            });
+        });
+    </script>
 {% endblock container_right %}

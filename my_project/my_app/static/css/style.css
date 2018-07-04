@@ -32,3 +32,16 @@ td {
     background: rgb(127, 231, 235);
     transform: scale(1.05);
 }
+
+/* Painel deslizante, search, lista de documentos encontrados */
+.panel, .flip {
+    padding: 5px;
+    text-align: center;
+    background-color: #f8f8f8;
+    border: solid 1px #c3c3c3;
+}
+
+.panel {
+    padding: 50px;
+    display: none;
+}
