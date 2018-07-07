@@ -170,7 +170,7 @@ class DB(object):
         for doc in docs:
             temp = Documents.objects.values(
                 'name', 'text').filter(name=doc[0])[0]
-            temp['name'] = temp['name'].split(".")[0]
+            temp['id'] = temp['name'].split(".")[0]+"_"+temp['name'].split(".")[-1]
             temp['similaridade'] = round(doc[1], 5)
             docs_db.append(temp)
         return docs_db

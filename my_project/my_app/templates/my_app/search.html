@@ -2,7 +2,7 @@
 
 {% block container_left %}
     <header style="width: 100%; margin: 10px">Archives</header>
-    <nav class="scroll" style="width: 100%; height: 100%;">
+    <nav class="scroll" style="width: 100%; height: 100%; overflow: hidden; overflow-y: scroll;">
         <ul id="ul-scroll" class="scroll">
             {% for document in documents_name %}
             <li class="row-document" onclick="row_document_click(event)">{{ document.name }}</li>
@@ -17,7 +17,7 @@
         {% for doc in list_doc %}
             <p></p>
             <div class="flip">{{ doc.name }}  -  {{ doc.similaridade }}</div>
-            <div id={{ doc.name }} class="panel">{{ doc.text }}</div>
+            <div id={{ doc.id }} class="panel">{{ doc.text }}</div>
         {% endfor %}
     </div>
     <script> 
@@ -26,7 +26,8 @@
                 let nome = event.target.innerText.split(' ')[0]
                 console.log("#"+nome)
                 let ele = document.getElementById(nome)
-                nome = "#"+nome
+                let name_split = nome.split('.')
+                nome = "#"+name_split[0]+"_"+name_split[name_split.length-1]
                 $(nome).slideToggle(360);
                 // $(".panel").slideToggle("fast");
             });

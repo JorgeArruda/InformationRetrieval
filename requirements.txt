@@ -1,10 +1,7 @@
 bs4
-nltk
 pdftotext
-PyMySQL
 mysqlclient
 pytesseract
 ply
 django
 python-docx
-numpy

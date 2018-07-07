@@ -1,0 +1,20 @@
+body{
+	display: flex;
+}
+header{
+	padding-top: 5px;
+}
+main{
+	padding-top: 240px;
+}
+#panel, #flip {
+    padding: 5px;
+    text-align: center;
+    
+}
+
+#panel {
+    padding: 50px;
+    display: none;
+}
+

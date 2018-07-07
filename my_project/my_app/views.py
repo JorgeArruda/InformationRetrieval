@@ -11,7 +11,7 @@ import os
 import sys
 import json
 import math
-import numpy as np
+# import numpy as np
 
 import my_app.ri_vetorial.tokens.archive as archive
 # from .mysql import update_global_all, update_global_idf, update_global_insert, update_global_remove, insert_document, remove_document
@@ -21,7 +21,7 @@ from .database import DB
 
 def home(request):
     documents = Documents.objects.values('name').distinct()
-    return render(request, 'my_app/home.html', {'documents': documents})
+    return render(request, 'my_app/documents.html', {'documents': documents})
 
 
 @csrf_exempt
@@ -173,7 +173,7 @@ def getidf(request):
 def updateall(request):
     DB().update_global_all()
     documents = Documents.objects.values('name').distinct()
-    return render(request, 'my_app/test.html', {'documents': documents})
+    return render(request, 'my_app/documents.html', {'documents': documents})
 
 
 @csrf_exempt
@@ -192,6 +192,10 @@ def search(request):
 
 def documents(request):
     return render(request, 'my_app/documents.html', {'title': 'Documentos'})
+
+
+def teste(request):
+    return render(request, 'index.html', {'title': 'Documentos'})
 
 
 def roundd(val, digits):
