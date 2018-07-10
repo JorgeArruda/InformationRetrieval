@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'getglobal$', views.getglobal, name='getglobal'),
     url(r'getidf$', views.getidf, name='idf'),
     url(r'updateall$', views.updateall, name='updateall'),
-    url(r'search$', views.search, name='search'),
-    url(r'search/$', views.search, name='busca'),
+    url(r'busca/$', views.busca, name='busca'),
+    url(r'search/$', views.search, name='search'),
 ]

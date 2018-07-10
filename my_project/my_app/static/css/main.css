@@ -7,14 +7,20 @@ header{
 main{
 	padding-top: 240px;
 }
-#panel, #flip {
+#main_result{
+	padding-top: 100px;
+}
+.panel, .flip {
     padding: 5px;
     text-align: center;
     
 }
 
-#panel {
-    padding: 50px;
+.panel {
+    /* padding: 50px; */
     display: none;
 }
 
+#panel_conf {
+    padding: 10px;
+}

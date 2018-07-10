@@ -190,6 +190,20 @@ def search(request):
     return render(request, 'my_app/search.html', {'list_doc': docs})
 
 
+@csrf_exempt
+def busca(request):
+    docs = []
+    try:
+        query = request.POST['text']
+        print('Query: ', query)
+        docs = DB().search(query)
+        for doc in docs:
+            print('Name: ', doc['name'])
+    except MultiValueDictKeyError:
+        print('Error search() in views.py line 187')
+    return render(request, 'search.html', {'list_doc': docs})
+
+
 def documents(request):
     return render(request, 'my_app/documents.html', {'title': 'Documentos'})
 

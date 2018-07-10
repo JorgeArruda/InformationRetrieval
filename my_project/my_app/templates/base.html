@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <title>Modelo Vetorial - Resultados</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+          <div class="custom-file">
+            <form class="form-signin" method="POST">
+              {% csrf_token %}
+              <input type="file" class="custom-file-input" id="customFile" lang="pt-br" onchange="handleFiles(event)">
+              <label class="custom-file-label" for="customFile">Inserir DOC</label>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+  
+    {% block main %}{% endblock main %}
+  
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $("#flip_conf").click(function () {
+        $("#panel_conf").slideToggle(360);
+      });
+    });
+  </script>
+</body>
