@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `ri_vetorial`.`documents` (
   `doubleNormalization` JSON NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 164
+AUTO_INCREMENT = 192
 DEFAULT CHARACTER SET = utf8
 
 CREATE TABLE IF NOT EXISTS `ri_vetorial`.`global` (
@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS `ri_vetorial`.`global` (
   `qtTokens` INT(11) NULL DEFAULT '0',
   `qtDocument` JSON NULL DEFAULT NULL,
   `idf` JSON NULL DEFAULT NULL,
+  `IFSmooth` JSON NULL DEFAULT NULL,
+  `IFMax` JSON NULL DEFAULT NULL,
+  `IFProbabilistic` JSON NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2

@@ -138,6 +138,9 @@ class Global(models.Model):
     qtTokens = models.IntegerField(db_column='qtTokens', blank=True, null=True)  # Field name made lowercase.
     qtDocument = models.TextField(db_column='qtDocument', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     idf = models.TextField(blank=True, null=True)  # This field type is a guess.
+    ifsmooth = models.TextField(db_column='IFSmooth', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    ifmax = models.TextField(db_column='IFMax', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    ifprobabilistic = models.TextField(db_column='IFProbabilistic', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
 
     class Meta:
         managed = False

@@ -40,7 +40,14 @@ class InverseFrequencyMax(object):
     def __init__(self):
         pass
 
+    def calcPeso(self, qtDoc, qtDocTermo):
+        "qtDoc deve ser a freq max entre os termos nos documentos da coleção"
+        return math.log2(1 + (qtDoc / (1 + qtDocTermo)))
+
 
 class InverseFrequencyProbabilistic(object):
     def __init__(self):
         pass
+
+    def calcPeso(self, qtDoc, qtDocTermo):
+        return math.log2((qtDoc - qtDocTermo) / qtDocTermo)

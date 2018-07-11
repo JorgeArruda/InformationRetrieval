@@ -19,6 +19,9 @@ class Colecao(object):
         self.listDocuments = []
         self.tokens = {}
         self.idf = {}
+        self.ifsmooth = {}
+        self.ifmax = {}
+        self.ifprobabilistic = {}
 
         self.qtToken = 0
         self.qtStopword = 0
@@ -65,11 +68,25 @@ class Colecao(object):
         return -1
 
     def updateIdf(self):
-        # print('Colecao().updateIdf()')
+        print('Colecao().updateIdf()')
         strategyIDF = self.instanciar(idf_class, self.algoritmo['idf'])
+        InverseFrequency = idf_class.InverseFrequency()
+        IFSmooth = idf_class.InverseFrequencySmooth()
+        IFMax = idf_class.InverseFrequencyMax()
+        IFProbabilistic = idf_class.InverseFrequencyProbabilistic()
+
         self.idf = {}
+        self.ifsmooth = {}
+        self.ifmax = {}
+        self.ifprobabilistic = {}
+
+        qt = self.qtDocumentos  # Quantidade total de documentos da coleção
+        qtMAX = sort_dic(self.qtTermoDocumento, 1, True)[0][1]
         for key in self.qtTermoDocumento:
-            self.idf[key] = strategyIDF.calcPeso(self.qtDocumentos, self.qtTermoDocumento[key])
+            self.idf[key] = InverseFrequency.calcPeso(qt, self.qtTermoDocumento[key])
+            self.ifsmooth[key] = IFSmooth.calcPeso(qt, self.qtTermoDocumento[key])
+            self.ifmax[key] = IFMax.calcPeso(qtMAX, self.qtTermoDocumento[key])
+            self.ifprobabilistic[key] = IFProbabilistic.calcPeso(qt, self.qtTermoDocumento[key])
         return self.idf
 
     def instanciar(self, origem, nome):

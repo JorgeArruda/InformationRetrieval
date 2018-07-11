@@ -14,13 +14,20 @@ class DB(object):
     def update_global_idf(self):
         "Atualiza o idf da coleção"
         colecao = Connection().startColecao()
+        colecao.updateIdf()
         # print('17 >>>>>>> idf', colecao.idf)
-        idf = json.dumps(colecao.updateIdf(), ensure_ascii=False)
+        idf = json.dumps(colecao.idf, ensure_ascii=False)
+        ifsmooth = json.dumps(colecao.ifsmooth, ensure_ascii=False)
+        ifmax = json.dumps(colecao.ifmax, ensure_ascii=False)
+        ifprobabilistic = json.dumps(colecao.ifprobabilistic, ensure_ascii=False)
         # print('19 >>>>>>> idf', idf)
 
         id = Global.objects.values('id').distinct()[0]['id']
         document_edit = Global.objects.get(id=id)  # object to update
         document_edit.idf = idf  # update idf
+        document_edit.ifsmooth = ifsmooth
+        document_edit.ifmax = ifmax
+        document_edit.ifprobabilistic = ifprobabilistic
         document_edit.save()  # save object
 
         return True
