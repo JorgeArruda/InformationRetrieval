@@ -1,19 +1,22 @@
-body{
-	display: flex;
+body {
+    display: flex;
 }
-header{
-	padding-top: 5px;
+
+header {
+    padding-top: 5px;
 }
-main{
-	padding-top: 240px;
+
+main {
+    padding-top: 240px;
 }
-#main_result{
-	padding-top: 100px;
+
+#main_result {
+    padding-top: 30px;
 }
+
 .panel, .flip {
     padding: 5px;
     text-align: center;
-    
 }
 
 .panel {
@@ -23,4 +26,19 @@ main{
 
 #panel_conf {
     padding: 10px;
+}
+
+.panel_documents, .flip_documents {
+    padding: 5px;
+    padding-top: 20px;
+    text-align: center;
+    border-bottom: solid 1px #c3c3c3;
+}
+
+.panel_documents {
+    padding: 15px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    display: none;
+    /* border-bottom: solid 1px #c3c3c3; */
 }

@@ -186,7 +186,7 @@ def search(request):
         for doc in docs:
             print('Name: ', doc['name'])
     except MultiValueDictKeyError:
-        print('Error search() in views.py line 187')
+        print('Error search() in views.py line 189')
     return render(request, 'my_app/search.html', {'list_doc': docs})
 
 
@@ -200,7 +200,7 @@ def busca(request):
         for doc in docs:
             print('Name: ', doc['name'])
     except MultiValueDictKeyError:
-        print('Error search() in views.py line 187')
+        print('Error search() in views.py line 203')
     return render(request, 'search.html', {'list_doc': docs})
 
 

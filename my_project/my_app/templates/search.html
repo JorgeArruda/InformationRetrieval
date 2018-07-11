@@ -3,7 +3,7 @@
 <main class="row" id="main_result">
   <div class="col-md-3"></div>
   <div class="col-md-6 search-box">
-    <form class="form-signin" action="{% url 'search' %}" method="POST">
+    <form class="form-signin" action="{% url 'busca' %}" method="POST">
       <div class="input-group">
         <input type="text" name="text" class="form-control" placeholder="Pesquise Aqui">
         <button class="btn btn-secondary" type="submit">Pesquisar</button>
@@ -30,5 +30,29 @@
   <div class="col-md-4"></div>
   <div class="col-md-4"></div>
 </main>
+<div class="row" style="padding-top: 20px"></div>
+{% for doc in list_doc %}
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="flip_documents">{{ doc.name }} - {{ doc.similaridade }}</div>
+    <div id={{ doc.id }} class="panel_documents text-justify">{{ doc.text }}</div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+{% endfor %}
 
+<script>
+  $(document).ready(function () {
+    $(".flip_documents").click(function (event) {
+      let nome = event.target.innerText.split(' ')[0]
+      console.log("#" + nome)
+      let ele = document.getElementById(nome)
+      let name_split = nome.split('.')
+      nome = "#" + name_split[0] + "_" + name_split[name_split.length - 1]
+      $(nome).slideToggle(360);
+      // $(".panel").slideToggle("fast");
+    });
+  });
+</script>
 {% endblock main %}
