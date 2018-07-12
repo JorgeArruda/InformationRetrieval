@@ -118,10 +118,14 @@ function updateAll() {
 
 function buscar() {
     var text = document.getElementById('inputBusca').value;
+    var tfType = document.getElementById('tfType').value;
+    var idfType = document.getElementById('idfType').value;
     console.log('Buscar: ', text);
     var xhr = new XMLHttpRequest();
     xhr.open('post', 'search', true);
     var fd = new FormData();
+    fd.append('text', text);
+    fd.append('text', text);
     fd.append('text', text);
     xhr.send(fd);
 }

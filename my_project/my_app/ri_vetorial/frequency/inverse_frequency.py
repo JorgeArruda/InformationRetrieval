@@ -50,4 +50,4 @@ class InverseFrequencyProbabilistic(object):
         pass
 
     def calcPeso(self, qtDoc, qtDocTermo):
-        return math.log2((qtDoc - qtDocTermo) / qtDocTermo)
+        return math.log2((1 + qtDoc - qtDocTermo) / qtDocTermo)

@@ -165,14 +165,12 @@ class DB(object):
         self.update_global_idf()
         # Global(id=1, words=json.dumps(words, ensure_ascii=False)).save()
 
-    def search(self, query):
+    def search(self, query, strategyTF='DoubleNormalization', strategyIDF='InverseFrequencySmooth'):
         colecao = Connection().startColecao()
         consulta = Connection().startSearch(query)
+        print('\nsearch() ?? ', strategyTF, strategyIDF)
+        docs = colecao.calcular_similaridade(consulta, strategyTF, strategyIDF)
 
-        docs = colecao.calcular_similaridade(consulta)
-        # qtd[0] = qtd[0] if qtd[0] >= 0 else 0
-        # qtd[1] = qtd[1] if qtd[1] < len(docs) else len(docs)+1
-        # docs = docs[qtd[0]:qtd[1]]
         docs_db = []
         for doc in docs:
             temp = Documents.objects.values(

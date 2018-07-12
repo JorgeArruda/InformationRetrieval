@@ -3,7 +3,6 @@
 try:
     from .frequency import term_frequency as tf_class
     from .frequency import inverse_frequency as idf_class
-    from .frequency import tf_idf as tfidf_class
 
     from .tokens.lex import tokenize
     from .tokens.stopwords import Stop
@@ -11,7 +10,6 @@ try:
 except ImportError:
     from frequency import term_frequency as tf_class
     from frequency import inverse_frequency as idf_class
-    from frequency import tf_idf as tfidf_class
 
     from tokens.lex import tokenize
     from tokens.stopwords import Stop
@@ -28,6 +26,9 @@ class Consulta(object):
         self.termoMaiorFrequencia = 0
 
         self.tokens = {}
+        self.tf = {}
+        self.logNormalization = {}
+        self.doubleNormalization = {}
         self.listaTermos = []
 
         self.remove_stopwords()
@@ -60,11 +61,17 @@ class Consulta(object):
     def processar(self):
         strategyTF = tf_class.DoubleNormalization()
         # print('\nprocessar      ', strategyTF, '\n')
+        self.tf = {}
+        self.logNormalization = {}
+        self.doubleNormalization = {}
         for word in self.tokens:
             # termo = Termo()
             frequency = self.tokens[word]
 
             self.tokens[word] = strategyTF.calcPeso(frequency, self)
+            self.tf[word] = strategyTF.calcPeso(frequency, self)
+            self.logNormalization[word] = tf_class.LogNormalization().calcPeso(frequency, self)
+            self.doubleNormalization[word] = tf_class.DoubleNormalization().calcPeso(frequency, self)
 
     def clean(self, tokens):
         "Remove stopwords e verifica a quantidade removida. Return {'tokens', \

@@ -4,7 +4,7 @@ from operator import itemgetter
 try:
     from .frequency import term_frequency as tf
     from .frequency import inverse_frequency as idf_class
-    from .frequency import tf_idf as tfidf_class
+    # from .frequency import tf_idf as tfidf_class
 
     from .tokens.lex import tokenize
     from .tokens.stopwords import Stop
@@ -12,7 +12,7 @@ try:
 except ImportError:
     from frequency import term_frequency as tf
     from frequency import inverse_frequency as idf_class
-    from frequency import tf_idf as tfidf_class
+    # from frequency import tf_idf as tfidf_class
 
     from tokens.lex import tokenize
     from tokens.stopwords import Stop

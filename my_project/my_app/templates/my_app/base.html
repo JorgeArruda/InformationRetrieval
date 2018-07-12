@@ -13,8 +13,9 @@
 
 <body>
   <div style="width: 100%; height: 100%; position: fixed;">
-    <div style="padding: 15px; width: 100%; height: 25%; background-color: cadetblue;">
-      <div class="form-group">
+
+    <div style="padding: 15px; width: 100%; height: 25%; background-color: cadetblue; display: flex;">
+      <div>
         <form class="form-signin" method="POST">
           {% csrf_token %}
           <label for="inputFile">Upload file</label>
@@ -28,12 +29,32 @@
           {% csrf_token %}
           <button onclick="updateAll()">Atualizar dados</button>
         </form>
-
+      </div>
+      <div class="form-group" style="padding-left: 20px">
         <div>
           <form class="form-signin" action="{% url 'search' %}" method="POST">
             {% csrf_token %}
             <input type="text" id="text" name="text">
             <input type="submit" value="Search">
+            <div class="form-row align-items-center" style="height: 15px; display: block;" <div class="col-auto my-1">
+              <label class="mr-sm-2" for="inlineFormCustomSelect"></label>
+              <select name="tfType" class="custom-select mr-sm-2" style="height: 15px" id="inlineFormCustomSelect">
+                <!-- <option selected>Choose...</option> -->
+                <option>DoubleNormalization</option>
+                <option>RawFrequency</option>
+                <option>LogNormalization</option>
+              </select>
+            </div>
+            <div class="form-row align-items-center" style="padding-top: 20px; height: 15px; display: block;" <div class="col-auto my-1">
+              <label class="mr-sm-2" for="inlineFormCustomSelect"></label>
+              <select name="idfType" class="custom-select mr-sm-2" style="height: 15px" id="inlineFormCustomSelect">
+                <!-- <option selected>Choose...</option> -->
+                <option>InverseFrequencySmooth</option>
+                <option>InverseFrequency</option>
+                <option>InverseFrequencyMax</option>
+                <option>InverseFrequencyProbabilistic</option>
+              </select>
+            </div>
           </form>
         </div>
       </div>

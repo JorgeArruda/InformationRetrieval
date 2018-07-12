@@ -27,7 +27,17 @@ class Connection(object):
         # print('IDF       ....       ', colecao_bd['idf'])
         if colecao_bd['idf'] == None:
             colecao_bd['idf'] = '{}'
+        if colecao_bd['ifsmooth'] == None:
+            colecao_bd['ifsmooth'] = '{}'
+        if colecao_bd['ifmax'] == None:
+            colecao_bd['ifmax'] = '{}'
+        if colecao_bd['ifprobabilistic'] == None:
+            colecao_bd['ifprobabilistic'] = '{}'
         colecao.idf = json.loads(colecao_bd['idf'])
+        colecao.ifsmooth = json.loads(colecao_bd['ifsmooth'])
+        colecao.ifmax = json.loads(colecao_bd['ifmax'])
+        colecao.ifprobabilistic = json.loads(colecao_bd['ifprobabilistic'])
+
         colecao.listTermosColecao = sorted(list(colecao.tokens.keys()))
         colecao.qtDocumentos = len(Documents.objects.values('name').distinct())
         colecao.qtTermos = len(colecao.listTermosColecao)

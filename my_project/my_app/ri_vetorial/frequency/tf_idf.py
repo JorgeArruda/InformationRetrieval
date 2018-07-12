@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 from abc import ABC, abstractmethod
 try:
-    from .inverse_frequency import InverseFrequency
-    from .term_frequency import RawFrequency
+    import inverse_frequency as idf
+    import term_frequency as tf
 except ImportError:
-    from inverse_frequency import InverseFrequency
-    from term_frequency import RawFrequency
+    import inverse_frequency as idf
+    import term_frequency as tf
 
 
 class AbstractTFIDF(ABC):
@@ -17,13 +17,19 @@ class AbstractTFIDF(ABC):
     def calcPeso(self, termo, listaDocumentos):
         pass
 
+    def instanciar(self, origem, nome):
+        try:
+            return getattr(origem, nome)()
+        except AttributeError:
+            print('Error, a classe %s não existe' % (nome))
+
 
 class TFIDF(AbstractTFIDF):
-    def __init__(self, strategyTF=RawFrequency(), strategyIDF=InverseFrequency):
-        self.strategyTF = strategyTF
-        self.strategyIDF = strategyIDF
+    def __init__(self, strategyTF='DoubleNormalization', strategyIDF='InverseFrequencySmooth'):
+        self.strategyTF = self.instanciar(tf, strategyTF)
+        self.strategyIDF = self.instanciar(idf, strategyIDF)
 
     def calcPeso(self, termo, listaDocumentos):
-        tf = self.strategyTF.calcPeso(termo, None)
-        idf = self.strategyIDF.calcPeso(termo, listaDocumentos)
+        tf = self.strategyTF().calcPeso(termo, None)
+        idf = self.strategyIDF().calcPeso(termo, listaDocumentos)
         return tf * idf

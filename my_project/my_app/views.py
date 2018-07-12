@@ -180,9 +180,12 @@ def updateall(request):
 def search(request):
     docs = []
     try:
+        print('request.POST  ...  ', request.POST)
         query = request.POST['text']
+        strategyTF = request.POST['tfType']
+        strategyIDF = request.POST['idfType']
         print('Query: ', query)
-        docs = DB().search(query)
+        docs = DB().search(query, strategyTF, strategyIDF)
         for doc in docs:
             print('Name: ', doc['name'])
     except MultiValueDictKeyError:
@@ -195,8 +198,10 @@ def busca(request):
     docs = []
     try:
         query = request.POST['text']
-        print('Query: ', query)
-        docs = DB().search(query)
+        strategyTF = request.POST['tfType']
+        strategyIDF = request.POST['idfType']
+        print('request.POST: ', request.POST)
+        docs = DB().search(query, strategyTF, strategyIDF)
         for doc in docs:
             print('Name: ', doc['name'])
     except MultiValueDictKeyError:
