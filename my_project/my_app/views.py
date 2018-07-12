@@ -209,10 +209,12 @@ def busca(request):
     return render(request, 'search.html', {'list_doc': docs})
 
 
+@csrf_exempt
 def documents(request):
     return render(request, 'my_app/documents.html', {'title': 'Documentos'})
 
 
+@csrf_exempt
 def teste(request):
     return render(request, 'index.html', {'title': 'Documentos'})
 
